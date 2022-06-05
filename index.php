@@ -1,5 +1,5 @@
 <?php
-include_once 'components/header.php';
+require_once 'components/header.php';
 require_once 'autoloader.php';
 
 $articleRepository = new ArticleRepository();
@@ -7,7 +7,7 @@ $articles = $articleRepository->get_articles_for_home_page();
 $main_article = $articles[0];
 ?>
 <body>
-<?php include_once 'components/navbar.php' ?>
+<?php require_once 'components/navbar.php' ?>
 <div id="index-page" class="page">
     <h1 class="page__title">Nejnovější zprávy všeho druhu</h1>
     <hr class="horizontal-line">
@@ -31,7 +31,7 @@ $main_article = $articles[0];
     </div>
     <hr class="horizontal-line">
     <div id="articles">
-        <?php include_once("components/articles.php") ?>
+        <?php require_once("components/articles.php") ?>
     </div>
 </div>
 <script>

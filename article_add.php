@@ -1,5 +1,5 @@
 <?php
-include_once 'components/header.php';
+require_once 'components/header.php';
 require_once 'autoloader.php';
 AuthService::InitAuth();
 
@@ -15,7 +15,7 @@ if(!empty($_POST['title']) && !empty($_FILES['title-image']) && !empty($_POST['p
 }
 ?>
 <body>
-<?php include_once 'components/navbar.php' ?>
+<?php require_once 'components/navbar.php' ?>
 <div id="article-add-page" class="page">
     <h1 class="page__title">Přidat článek</h1>
     <form action="" method="post" enctype="multipart/form-data">

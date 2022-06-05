@@ -4,10 +4,10 @@ class DatabaseManager
 {
     private static $instance = null;
 
-    private const HOST = 'mysqlstudenti.litv.sssvt.cz';
-    private const DBNAME = '4b1_kopeckymichal_db1';
-    private const USER = 'kopeckymichal';
-    private const PASSWORD = '123456';
+    private const HOST = 'localhost';
+    private const DBNAME = 'phpnews';
+    private const USER = 'root';
+    private const PASSWORD = '';
 
     private $conn;
 

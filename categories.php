@@ -1,12 +1,12 @@
 <?php
-include_once 'components/header.php';
+require_once 'components/header.php';
 require_once 'autoloader.php';
 
 $categoryRepository = new CategoryRepository();
 $categories = $categoryRepository->get_all_categories();
 ?>
 <body>
-<?php include_once 'components/navbar.php' ?>
+<?php require_once 'components/navbar.php' ?>
 <div id="categories-page" class="page">
     <h1 class="page__title">Kategorie</h1>
     <div id="categories">

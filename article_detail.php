@@ -1,5 +1,5 @@
 <?php
-include_once 'components/header.php';
+require_once 'components/header.php';
 require_once 'autoloader.php';
 
 $articleRepository = new ArticleRepository();
@@ -14,7 +14,7 @@ $recommendedArticles = $articleRepository->get_recommended_articles($article['ca
 $comments = $commentRepository->get_article_comments($article['article_id']);
 ?>
 <body>
-<?php include_once 'components/navbar.php' ?>
+<?php require_once 'components/navbar.php' ?>
 <div id="article-detail-page" class="page">
     <div id="article-detail-page__left-side">
         <div class="article-detail">
@@ -46,11 +46,13 @@ $comments = $commentRepository->get_article_comments($article['article_id']);
                         <div class="comment__content"><?= $comment['content'] ?></div>
                         <div class="comment__date_added"><?= $comment['date_added'] ?></div>
                     </div>
-                    <?php if ($_SESSION['is_admin'] == 1 || $article['author_id'] == $_SESSION['id']): ?>
-                        <div class="comment__actions">
-                            <a href="comment_delete.php?comment_id=<?= $comment['id'] ?>&article_id=<?= $article['article_id'] ?>"
-                               class="button button-danger">Odstranit</a>
-                        </div>
+                    <?php if (array_key_exists('is_admin', $_SESSION)): ?>
+                        <?php if ($_SESSION['is_admin'] == 1 || $article['author_id'] == $_SESSION['id']): ?>
+                            <div class="comment__actions">
+                                <a href="comment_delete.php?comment_id=<?= $comment['id'] ?>&article_id=<?= $article['article_id'] ?>"
+                                   class="button button-danger">Odstranit</a>
+                            </div>
+                        <?php endif; ?>
                     <?php endif; ?>
                 </div>
                 <?php if (array_search($comment, $comments) != count($comments) - 1): ?>

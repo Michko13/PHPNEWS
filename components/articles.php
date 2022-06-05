@@ -1,9 +1,12 @@
 <?php
-include_once 'components/header.php'; if(!isset($articles)) {
+require_once 'components/header.php';
+
+if(!isset($articles)) {
     $articles = [];
-}?>
+}
+?>
 <?php foreach ($articles as $article): ?>
-    <div class="article">
+    <div class="article" onclick="window.location.href='article_detail.php?id=<?= $article['article_id'] ?>'">
         <div class="article__header">
             <img class="header__title-image" src="<?= $article['title_image'] ?>"
                  onclick="window.location.href='article_detail.php?id=<?= $article['article_id'] ?>'"/>
@@ -19,8 +22,5 @@ include_once 'components/header.php'; if(!isset($articles)) {
             </div>
         </div>
         <div class="article__perex"><?= $article['perex'] ?></div>
-        <div class="article__read-more-btn">
-            <a href="article_detail.php?id=<?= $article['article_id'] ?>">Číst dál...</a>
-        </div>
     </div>
 <?php endforeach; ?>

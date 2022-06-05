@@ -1,5 +1,5 @@
 <?php
-include_once 'components/header.php';
+require_once 'components/header.php';
 require_once 'autoloader.php';
 AuthService::StartSession();
 
@@ -11,9 +11,8 @@ if(isset($_SESSION['username'])) {
 }
 
 if(!empty($_POST['username']) && !empty($_POST['password'])) {
-    include_once 'autoloader.php';
-
     $sql = 'SELECT * FROM author WHERE username = :username AND password = :password';
+
     $result = DatabaseManager::get_instance()->selectOne($sql, [
         ':username' => $_POST['username'],
         ':password' => hash("sha256", $_POST['password'])

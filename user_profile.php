@@ -1,11 +1,11 @@
 <?php
-include_once 'components/header.php';
+require_once 'components/header.php';
 require_once 'autoloader.php';
 AuthService::InitAuth();
 
 ?>
 <body>
-<?php include_once 'components/navbar.php' ?>
+<?php require_once 'components/navbar.php' ?>
 <div id="profile-page" class="page">
     <h1 class="page__title">Profil <a href="logout.php" class="button button-danger" style="font-size: 16px;">Odhlásit se</a></h1>
     <div id="profile-page__user-info">

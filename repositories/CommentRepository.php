@@ -1,6 +1,6 @@
 <?php
 
-include_once 'DatabaseManager.php';
+require_once 'DatabaseManager.php';
 
 class CommentRepository
 {

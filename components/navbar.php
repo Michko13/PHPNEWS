@@ -1,5 +1,4 @@
 <?php
-
 require_once 'repositories/AuthService.php';
 AuthService::StartSession();
 
@@ -8,7 +7,7 @@ $current_path = substr($_SERVER["SCRIPT_NAME"], strrpos($_SERVER["SCRIPT_NAME"],
 <header>
     <nav>
         <div class="nav__links">
-            <a class="nav__logo" href="index.php">SSSVTNEWS</a>
+            <a class="nav__logo" href="index.php">PHPNEWS</a>
             <a class="nav__link <?php echo($current_path == "index.php" ? "nav__selected" : "") ?>" href="index.php">ZPRÁVY</a>
             <a class="nav__link <?php echo($current_path == "categories.php" ? "nav__selected" : "") ?>" href="categories.php">KATEGORIE</a>
             <a class="nav__link <?php echo($current_path == "authors.php" ? "nav__selected" : "") ?>" href="authors.php">AUTOŘI</a>
@@ -50,8 +49,15 @@ $current_path = substr($_SERVER["SCRIPT_NAME"], strrpos($_SERVER["SCRIPT_NAME"],
     <script>
         const hamburgerBtn = document.getElementById("hamburger");
         const mobileMenu = document.getElementById("nav__mobile-menu");
+
         hamburgerBtn.addEventListener("click", () => {
             mobileMenu.classList.contains("hide") ? mobileMenu.classList.remove("hide") : mobileMenu.classList.add("hide");
+        })
+
+        window.addEventListener("resize", () => {
+            if(window.innerWidth > 1000) {
+                mobileMenu.classList.add("hide");
+            }
         })
     </script>
 </header>

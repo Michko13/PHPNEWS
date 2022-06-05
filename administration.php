@@ -1,5 +1,5 @@
 <?php
-include_once 'components/header.php';
+require_once 'components/header.php';
 require_once 'autoloader.php';
 AuthService::InitAuth();
 
@@ -10,11 +10,11 @@ $articles = $articleRepository->get_articles_for_administration();
 $categories = $categoryRepository->get_categories_for_administration();
 ?>
 <body>
-<?php include_once 'components/navbar.php' ?>
-<?php include_once 'components/author_add_dialog.php' ?>
-<?php include_once 'components/category_add_dialog.php' ?>
-<?php include_once 'components/category_edit_dialog.php' ?>
-<?php include_once 'components/alert_dialog.php' ?>
+<?php require_once 'components/navbar.php' ?>
+<?php require_once 'components/author_add_dialog.php' ?>
+<?php require_once 'components/category_add_dialog.php' ?>
+<?php require_once 'components/category_edit_dialog.php' ?>
+<?php require_once 'components/alert_dialog.php' ?>
 <script>
     const authorAddDialog = document.getElementById("author-add-dialog");
     const categoryAddDialog = document.getElementById("category-add-dialog");
