@@ -10,5 +10,5 @@ if (!empty($_POST['username']) && !empty($_POST['name']) && !empty($_POST['surna
         $_POST['surname'], $_POST['bio'], 'uploads/' . $_FILES['picture']['name']);
 }
 
-header('Location: administration.php');
+header('Location: administration_index.php');
 die();

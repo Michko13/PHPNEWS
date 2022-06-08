@@ -7,5 +7,5 @@ if(!empty($_POST['name']) && !empty($_POST['description'])) {
     $categoryRepository->add_category($_POST['name'], $_POST['description']);
 }
 
-header('Location: administration.php');
+header('Location: administration_categories.php');
 die();

@@ -10,8 +10,9 @@ if (empty($_GET['id']) || !$articleRepository->does_article_exist($_GET['id'])) 
 
 $commentRepository = new CommentRepository();
 $article = $articleRepository->get_article($_GET['id']);
-$recommendedArticles = $articleRepository->get_recommended_articles($article['category_id'], 5);
 $comments = $commentRepository->get_article_comments($article['article_id']);
+$recommendedArticles = $articleRepository->get_recommended_articles($article['category_id'], 5);
+$articleRepository->add_view($_GET['id']);
 ?>
 <body>
 <?php require_once 'components/navbar.php' ?>
@@ -37,7 +38,7 @@ $comments = $commentRepository->get_article_comments($article['article_id']);
             <div class="article-detail__content"><?= $article['content'] ?></div>
         </div>
         <hr class="horizontal-line">
-        <h2 class="comments-title">Komentáře (<?= count($comments) ?>)</h2>
+        <h2 class="comments-title">Comments (<?= count($comments) ?>)</h2>
         <div id="comments">
             <?php foreach ($comments as $comment): ?>
                 <div class="comment">
@@ -50,7 +51,7 @@ $comments = $commentRepository->get_article_comments($article['article_id']);
                         <?php if ($_SESSION['is_admin'] == 1 || $article['author_id'] == $_SESSION['id']): ?>
                             <div class="comment__actions">
                                 <a href="comment_delete.php?comment_id=<?= $comment['id'] ?>&article_id=<?= $article['article_id'] ?>"
-                                   class="button button-danger">Odstranit</a>
+                                   class="button button-danger">Delete</a>
                             </div>
                         <?php endif; ?>
                     <?php endif; ?>
@@ -60,17 +61,17 @@ $comments = $commentRepository->get_article_comments($article['article_id']);
                 <?php endif; ?>
             <?php endforeach; ?>
         </div>
-        <h2 class="comments-title">Přidat komentář</h2>
+        <h2 class="comments-title">Add comment</h2>
         <form id="add-comment-form" action="comment_add.php" method="post">
             <input type="hidden" value="<?= $article['article_id'] ?>" name="article_id">
-            <input type="text" placeholder="Jméno a příjmení" name="username" required>
-            <textarea placeholder="Napište něco..." rows="10" name="content" required></textarea>
-            <button class="button" type="submit">Přidat</button>
+            <input type="text" placeholder="Name" name="username" required>
+            <textarea placeholder="Write something..." rows="10" name="content" required></textarea>
+            <button class="button" type="submit">Add</button>
         </form>
     </div>
     <div id="article-detail-page__right-side">
         <div id="article-recommendations">
-            <h4 class="article-recommendations__title">Doporučujeme</h4>
+            <h4 class="article-recommendations__title">Recommended</h4>
             <div class="article-recommendations__articles">
                 <?php foreach ($recommendedArticles as $recommendedArticle): ?>
                     <?php if ($recommendedArticle['article_id'] != $article['article_id']): ?>
@@ -85,7 +86,7 @@ $comments = $commentRepository->get_article_comments($article['article_id']);
             </div>
         </div>
         <div class="advert">
-            <h4 class="advert__title">Reklama</h4>
+            <h4 class="advert__title">Ad</h4>
             <a href="https://www.sssvt.cz"><img class="advert__image" src="https://i.imgur.com/g6pNCyy.png"></a>
         </div>
     </div>

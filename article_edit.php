@@ -6,7 +6,7 @@ AuthService::InitAuth();
 $articleRepository = new ArticleRepository();
 if (empty($_GET['id']) || !$articleRepository->does_article_exist($_GET['id']) &&
     !($_SESSION['is_admin'] == 1 || $articleRepository->get_article_author($_GET['id']) == $_SESSION['id'])) {
-    header('Location: administration.php');
+    header('Location: administration_index.php');
     die();
 }
 
@@ -27,16 +27,16 @@ if (isset($_GET['id']) && isset($_POST['title']) && isset($_FILES['title-image']
 <body>
 <?php require_once 'components/navbar.php' ?>
 <div id="article-add-page" class="page">
-    <h1 class="page__title">Upravit článek</h1>
+    <h1 class="page__title">Edit article</h1>
     <form action="" method="post" enctype="multipart/form-data">
         <div>
-            <label for="title-image">Titulní obrázek</label>
+            <label for="title-image">Title image</label>
             <input type="file" accept="image/png, image/jpeg" id="add-article-image" name="title-image"
                    onchange="previewImage()">
             <img id="image-preview" src=" <?= $article['title_image'] ?>">
         </div>
         <div>
-            <label for="title">Titulek</label>
+            <label for="title">Title</label>
             <input type="text" name="title" value="<?= $article['title'] ?>" required>
         </div>
         <div>
@@ -44,7 +44,7 @@ if (isset($_GET['id']) && isset($_POST['title']) && isset($_FILES['title-image']
             <textarea type="text" name="perex" required><?= $article['perex'] ?></textarea>
         </div>
         <div>
-            <label for="category">Kategorie</label>
+            <label for="category">Category</label>
             <select name="category" required>
                 <?php foreach ($categories as $category): ?>
                     <option value="<?= $category['id'] ?>"
@@ -54,11 +54,11 @@ if (isset($_GET['id']) && isset($_POST['title']) && isset($_FILES['title-image']
             </select>
         </div>
         <div>
-            <label for="publish">Zveřejnit</label>
+            <label for="publish">Publish</label>
             <input type="checkbox" name="publish" <?php echo($article['is_published'] == 1 ? "checked" : "") ?>>
         </div>
         <textarea class="editor" id="content" name="content" rows="30" cols="80"><?= $article['content'] ?></textarea>
-        <button class="button" type="submit">Uložit</button>
+        <button class="button" type="submit">Save</button>
     </form>
 </div>
 </body>

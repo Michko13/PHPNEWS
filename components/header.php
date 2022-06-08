@@ -13,5 +13,6 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="tinymce/js/tinymce/tinymce.min.js"></script>
     <script src="tinymce/js/tinymce/tinymce-init.js"></script>
+    <script src="scripts.js"></script>
 </head>
 <body>

@@ -51,6 +51,11 @@ a, a:hover, a:visited, a:active {
   margin: 0 auto;
   padding: calc(var(--nav-bar-height) + 16px) 16px 16px;
 }
+@media (min-width: 1001px) {
+  .page {
+    margin-top: 0 !important;
+  }
+}
 .page .page__title {
   margin-bottom: 16px;
 }
@@ -65,16 +70,21 @@ a, a:hover, a:visited, a:active {
   cursor: pointer;
 }
 
-.button:link, .button:visited {
+.button:link, .button:visited, .button:hover {
   color: white;
+}
+
+.button-text {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.button-text-selected {
+  color: var(--dark-blue) !important;
 }
 
 .button-danger {
   background-color: var(--red);
-}
-
-.button:hover {
-  color: white;
 }
 
 input[type=text], input[type=password], textarea {
@@ -85,8 +95,6 @@ input[type=text], input[type=password], textarea {
   border: none;
   resize: none;
   background-color: var(--light-gray);
-  margin-top: 4px;
-  margin-bottom: 12px;
 }
 
 .horizontal-line {
@@ -112,18 +120,24 @@ input[type=text], input[type=password], textarea {
   width: 100%;
   max-width: 360px;
   background-color: white;
-  padding: 32px;
+  padding: 22px;
+  margin: 26px;
 }
 .dialog .dialog__content .dialog__content__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
 }
 .dialog .dialog__content .dialog__content__header .close-button {
   font-size: 28px;
   cursor: pointer;
+}
+.dialog .dialog__content .dialog__content__body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 .dialog .dialog__content .dialog__content__body .dialog__content__body__actions {
   width: 100%;
@@ -137,7 +151,39 @@ input[type=text], input[type=password], textarea {
   padding-right: 28px;
 }
 .dialog .dialog__content .dialog__content__body label {
+  display: inline-block;
+  margin-bottom: 6px;
   font-weight: 500;
+}
+
+#image-add-dialog .dialog__content {
+  max-width: 556px;
+}
+#image-add-dialog #image-preview {
+  width: 100%;
+  max-width: 512px;
+  aspect-ratio: 4/3;
+}
+
+#image-detail-dialog .dialog__content {
+  max-width: 900px;
+}
+#image-detail-dialog .dialog__content .dialog__content__body {
+  flex-direction: row;
+}
+#image-detail-dialog .dialog__content .dialog__content__body #image-detail__metadata {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+#image-detail-dialog #image-detail__src-container {
+  width: 100%;
+  max-width: 512px;
+}
+#image-detail-dialog #image-detail__src-container #image-detail__src {
+  width: 100%;
+  aspect-ratio: 4/3;
+  margin-right: 16px;
 }
 
 header {
@@ -224,6 +270,12 @@ nav #nav__mobile-menu {
   background-color: white;
   padding-bottom: 16px;
   padding-left: 16px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0 20px 20px 0px;
+}
+@media (min-width: 1001px) {
+  nav #nav__mobile-menu {
+    display: none;
+  }
 }
 nav #nav__mobile-menu #mobile-menu__horizontal-line {
   width: calc(100% - 16px);
@@ -738,10 +790,17 @@ nav #hamburger .hamburger__bar {
 #administration-page h2 {
   margin: 16px 0;
 }
+#administration-page #administration__subpages {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
 #administration-page #administration__actions {
   display: flex;
-  gap: 12px;
+  gap: 16px;
   flex-wrap: wrap;
+  margin-bottom: 32px;
 }
 #administration-page table {
   width: 1150px;
@@ -751,7 +810,7 @@ nav #hamburger .hamburger__bar {
   border-collapse: collapse;
 }
 #administration-page table th, #administration-page table td {
-  text-align: left;
+  text-align: center;
   padding-bottom: 14px;
   padding-right: 14px;
 }
@@ -767,16 +826,66 @@ nav #hamburger .hamburger__bar {
   background-color: var(--light-gray);
 }
 #administration-page #administration__articles th, #administration-page #administration__articles td {
-  width: 15%;
+  width: 12%;
 }
 #administration-page #administration__articles .administration-article__title {
   width: 20%;
+  text-align: left;
 }
 #administration-page #administration__articles .administration-article__actions {
-  width: 20%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: center;
+  justify-content: center;
 }
 #administration-page #administration__categories th, #administration-page #administration__categories td {
   width: 25%;
+}
+#administration-page #administration__gallery #administration__gallery-images {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+@media (max-width: 907px) {
+  #administration-page #administration__gallery #administration__gallery-images {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (max-width: 632px) {
+  #administration-page #administration__gallery #administration__gallery-images {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 357px) {
+  #administration-page #administration__gallery #administration__gallery-images {
+    grid-template-columns: 1fr;
+  }
+}
+#administration-page #administration__gallery #administration__gallery-images img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  cursor: pointer;
+  transition: 0.3s ease all;
+}
+#administration-page #administration__gallery #administration__gallery-page-controller {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 16px;
+  font-size: 20px;
+  font-weight: 500;
+}
+#administration-page #administration__gallery #administration__gallery-page-controller .left-arrow {
+  margin-right: 8px;
+}
+#administration-page #administration__gallery #administration__gallery-page-controller .right-arrow {
+  margin-left: 8px;
+}
+#administration-page #administration__gallery #administration__gallery-page-controller .material-icons {
+  font-size: 36px;
 }
 
 #alert-dialog .alert-dialog__actions {
@@ -811,8 +920,7 @@ nav #hamburger .hamburger__bar {
 }
 #article-add-page form #image-preview {
   width: 100%;
-  max-height: 450px;
-  object-fit: contain;
+  max-width: 512px;
 }
 
 #profile-page .page__title {

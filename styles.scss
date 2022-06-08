@@ -79,6 +79,10 @@ h1 {
 .page {
   @include center;
   padding: calc(var(--nav-bar-height) + 16px) 16px 16px;
+  
+  @media (min-width: 1001px) {
+    margin-top: 0!important;
+  }
 
   .page__title {
     margin-bottom: 16px;
@@ -95,16 +99,21 @@ h1 {
   cursor: pointer;
 }
 
-.button:link, .button:visited {
+.button:link, .button:visited, .button:hover {
   color: white;
+}
+
+.button-text {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.button-text-selected {
+  color: var(--dark-blue)!important;
 }
 
 .button-danger {
   background-color: var(--red);
-}
-
-.button:hover {
-  color: white;
 }
 
 input[type=text], input[type=password], textarea {
@@ -115,8 +124,6 @@ input[type=text], input[type=password], textarea {
   border: none;
   resize: none;
   background-color: var(--light-gray);
-  margin-top: 4px;
-  margin-bottom: 12px;
 }
 
 .horizontal-line {
@@ -142,14 +149,15 @@ input[type=text], input[type=password], textarea {
     width: 100%;
     max-width: 360px;
     background-color: white;
-    padding: 32px;
+    padding: 22px;
+    margin: 26px;
 
     .dialog__content__header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      margin-bottom: 10px;
+      margin-bottom: 16px;
 
       .close-button {
         font-size: 28px;
@@ -158,6 +166,9 @@ input[type=text], input[type=password], textarea {
     }
 
     .dialog__content__body {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
 
       .dialog__content__body__actions {
         width: 100%;
@@ -173,8 +184,49 @@ input[type=text], input[type=password], textarea {
       }
 
       label {
+        display: inline-block;
+        margin-bottom: 6px;
         font-weight: 500;
       }
+    }
+  }
+}
+
+#image-add-dialog {
+  .dialog__content {
+    max-width: 556px;
+  }
+
+  #image-preview {
+    width: 100%;
+    max-width: 512px;
+    aspect-ratio: 4/3;
+  }
+}
+
+#image-detail-dialog {
+  .dialog__content {
+    max-width: 900px;
+
+    .dialog__content__body {
+      flex-direction: row;
+
+      #image-detail__metadata {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+    }
+  }
+
+  #image-detail__src-container {
+    width: 100%;
+    max-width: 512px;
+
+    #image-detail__src {
+      width: 100%;
+      aspect-ratio: 4/3;
+      margin-right: 16px;
     }
   }
 }
@@ -270,6 +322,11 @@ nav {
     background-color: white;
     padding-bottom: 16px;
     padding-left: 16px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0 20px 20px 0px;
+    
+    @media (min-width: 1001px) {
+      display: none;
+    }
 
     #mobile-menu__horizontal-line {
       width: calc(100% - 16px);
@@ -806,7 +863,6 @@ nav {
 }
 
 #administration-page {
-
   .horizontal-line {
     margin: 24px 0;
   }
@@ -815,10 +871,18 @@ nav {
     margin: 16px 0;
   }
 
-  #administration__actions {
+  #administration__subpages {
     display: flex;
-    gap: 12px;
+    gap: 16px;
     flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  #administration__actions{
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
   }
 
   table {
@@ -829,7 +893,7 @@ nav {
     border-collapse: collapse;
 
     th, td {
-      text-align: left;
+      text-align: center;
       padding-bottom: 14px;
       padding-right: 14px;
     }
@@ -851,21 +915,81 @@ nav {
 
   #administration__articles {
     th, td {
-      width: calc(60% / 4);
+      width: calc(60% / 5);
     }
 
     .administration-article__title {
       width: 20%;
+      text-align: left;
     }
 
     .administration-article__actions {
-      width: 20%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: center;
+      justify-content: center;
     }
   }
 
   #administration__categories {
     th, td {
       width: calc(100% / 4);
+    }
+
+    .administration-category__name {
+      //text-align: left;
+    }
+  }
+
+  #administration__gallery {
+
+    #administration__gallery-images {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+
+      @media (max-width: 907px) {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      @media (max-width: 632px) {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      @media (max-width: 357px) {
+        grid-template-columns: 1fr;
+      }
+
+      img {
+        width: 100%;
+        aspect-ratio: 4/3;
+        cursor: pointer;
+        transition: 0.3s ease all;
+      }
+    }
+
+    #administration__gallery-page-controller {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 16px;
+      font-size: 20px;
+      font-weight: 500;
+
+      .left-arrow {
+        margin-right: 8px;
+      }
+
+      .right-arrow {
+        margin-left: 8px;
+      }
+
+      .material-icons {
+        font-size: 36px;
+      }
     }
   }
 }
@@ -911,8 +1035,7 @@ nav {
 
     #image-preview {
       width: 100%;
-      max-height: 450px;
-      object-fit: contain;
+      max-width: 512px;
     }
   }
 }

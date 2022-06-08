@@ -8,5 +8,5 @@ if(!empty($_GET['id']) && $articleRepository->does_article_exist($_GET['id']) &&
     $articleRepository->delete_article($_GET['id']);
 }
 
-header('Location: administration.php');
+header('Location: administration_index.php');
 die();

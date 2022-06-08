@@ -13,7 +13,7 @@ if(isset($_SESSION['username'])) {
 if(!empty($_POST['username']) && !empty($_POST['password'])) {
     $sql = 'SELECT * FROM author WHERE username = :username AND password = :password';
 
-    $result = DatabaseManager::get_instance()->selectOne($sql, [
+    $result = DatabaseService::get_instance()->selectOne($sql, [
         ':username' => $_POST['username'],
         ':password' => hash("sha256", $_POST['password'])
     ]);
@@ -31,17 +31,17 @@ if(!empty($_POST['username']) && !empty($_POST['password'])) {
 <body>
 <div id="login-page">
     <div class="form">
-        <h2>Přihlašte se</h2>
+        <h2>Login</h2>
         <form action="" method="post">
             <div>
-                <label for="username">Uživatelské jméno</label>
+                <label for="username">Username</label>
                 <input type="text" name="username" id="username">
             </div>
             <div>
-                <label for="password">Heslo</label>
+                <label for="password">Password</label>
                 <input type="password" name="password" id="password">
             </div>
-            <button class="button" type="submit">Přihlásit se</button>
+            <button class="button" type="submit">Login</button>
         </form>
         <div class="error"><?= $error ?></div>
     </div>

@@ -1,6 +1,6 @@
 <?php
 
-require_once 'DatabaseManager.php';
+require_once 'services/DatabaseService.php';
 
 class AuthorRepository
 {
@@ -12,7 +12,7 @@ class AuthorRepository
             ':id' => $author_id
         ];
 
-        return DatabaseManager::get_instance()->exists($sql, $params);
+        return DatabaseService::get_instance()->exists($sql, $params);
     }
 
     public function get_all_authors()
@@ -21,7 +21,7 @@ class AuthorRepository
                 FROM author LEFT JOIN article on article.author_id = author.id
                 GROUP BY author.id';
 
-        return DatabaseManager::get_instance()->select($sql);
+        return DatabaseService::get_instance()->select($sql);
     }
 
     public function get_author_name($id)
@@ -32,7 +32,7 @@ class AuthorRepository
             ':id' => $id
         ];
 
-        return DatabaseManager::get_instance()->selectOne($sql, $params);
+        return DatabaseService::get_instance()->selectOne($sql, $params);
     }
 
     public function add_author($username, $password, $name, $surname, $bio, $picture)
@@ -50,7 +50,7 @@ class AuthorRepository
             ':is_admin' => '0'
         ];
 
-        return DatabaseManager::get_instance()->insert($sql, $params);
+        return DatabaseService::get_instance()->insert($sql, $params);
     }
 
     public function edit_author($username, $name, $surname, $bio, $picture)
@@ -66,7 +66,7 @@ class AuthorRepository
             ':picture' => $picture
         ];
 
-        $result = DatabaseManager::get_instance()->update($sql, $params);
+        $result = DatabaseService::get_instance()->update($sql, $params);
 
         if($result > 0) {
             $_SESSION['username'] = $username;

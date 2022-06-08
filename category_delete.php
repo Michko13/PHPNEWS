@@ -9,5 +9,5 @@ if(!empty($_GET['id']) && $categoryRepository->does_category_exist($_GET['id']) 
     }
 }
 
-header('Location: administration.php#administration__categories');
+header('Location: administration_categories.php');
 die();

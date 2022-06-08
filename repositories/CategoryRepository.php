@@ -1,6 +1,6 @@
 <?php
 
-require_once 'DatabaseManager.php';
+require_once 'services/DatabaseService.php';
 
 class CategoryRepository
 {
@@ -12,14 +12,14 @@ class CategoryRepository
             ':id' => $category_id
         ];
 
-        return DatabaseManager::get_instance()->exists($sql, $params);
+        return DatabaseService::get_instance()->exists($sql, $params);
     }
 
     public function get_all_categories()
     {
         $sql = 'SELECT * FROM category';
 
-        return DatabaseManager::get_instance()->select($sql);
+        return DatabaseService::get_instance()->select($sql);
     }
 
     public function get_category_name($category_id)
@@ -30,14 +30,14 @@ class CategoryRepository
             ':id' => $category_id
         ];
 
-        return DatabaseManager::get_instance()->selectOne($sql, $params)['name'];
+        return DatabaseService::get_instance()->selectOne($sql, $params)['name'];
     }
 
     public function get_all_categories_name()
     {
         $sql = 'SELECT id, name FROM category';
 
-        return DatabaseManager::get_instance()->select($sql);
+        return DatabaseService::get_instance()->select($sql);
     }
 
     public function get_categories_for_administration()
@@ -46,7 +46,7 @@ class CategoryRepository
                 LEFT JOIN article on article.category_id = category.id
                 GROUP BY category.id';
 
-        return DatabaseManager::get_instance()->select($sql);
+        return DatabaseService::get_instance()->select($sql);
     }
 
     public function add_category($name, $description)
@@ -58,7 +58,7 @@ class CategoryRepository
             ':description' => $description,
         ];
 
-        return DatabaseManager::get_instance()->insert($sql, $params);
+        return DatabaseService::get_instance()->insert($sql, $params);
     }
 
     public function delete_category($category_id)
@@ -69,7 +69,7 @@ class CategoryRepository
             ':id' => $category_id
         ];
 
-        return DatabaseManager::get_instance()->delete($sql, $params);
+        return DatabaseService::get_instance()->delete($sql, $params);
     }
 
     public function get_article_count_by_category($category_id)
@@ -80,7 +80,7 @@ class CategoryRepository
             ':id' => $category_id
         ];
 
-        return DatabaseManager::get_instance()->selectOne($sql, $params);
+        return DatabaseService::get_instance()->selectOne($sql, $params);
     }
 
     public function edit_category($category_id, $name, $description)
@@ -93,6 +93,6 @@ class CategoryRepository
             ':description' => $description
         ];
 
-        return DatabaseManager::get_instance()->update($sql, $params);
+        return DatabaseService::get_instance()->update($sql, $params);
     }
 }

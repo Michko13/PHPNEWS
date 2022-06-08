@@ -8,7 +8,7 @@ $categories = $categoryRepository->get_all_categories();
 <body>
 <?php require_once 'components/navbar.php' ?>
 <div id="categories-page" class="page">
-    <h1 class="page__title">Kategorie</h1>
+    <h1 class="page__title">Categories</h1>
     <div id="categories">
         <?php foreach ($categories as $category): ?>
             <a class="category" href="articles_by_category.php?id=<?= $category['id'] ?>">

@@ -1,5 +1,5 @@
 <?php
-require_once 'repositories/AuthService.php';
+require_once 'services/AuthService.php';
 AuthService::StartSession();
 
 $current_path = substr($_SERVER["SCRIPT_NAME"], strrpos($_SERVER["SCRIPT_NAME"], "/") + 1);
@@ -8,36 +8,36 @@ $current_path = substr($_SERVER["SCRIPT_NAME"], strrpos($_SERVER["SCRIPT_NAME"],
     <nav>
         <div class="nav__links">
             <a class="nav__logo" href="index.php">PHPNEWS</a>
-            <a class="nav__link <?php echo($current_path == "index.php" ? "nav__selected" : "") ?>" href="index.php">ZPRÁVY</a>
-            <a class="nav__link <?php echo($current_path == "categories.php" ? "nav__selected" : "") ?>" href="categories.php">KATEGORIE</a>
-            <a class="nav__link <?php echo($current_path == "authors.php" ? "nav__selected" : "") ?>" href="authors.php">AUTOŘI</a>
+            <a class="nav__link <?php echo($current_path == "index.php" ? "nav__selected" : "") ?>" href="index.php">HOME</a>
+            <a class="nav__link <?php echo($current_path == "categories.php" ? "nav__selected" : "") ?>" href="categories.php">CATEGORIES</a>
+            <a class="nav__link <?php echo($current_path == "authors.php" ? "nav__selected" : "") ?>" href="authors.php">AUTHORS</a>
         </div>
         <div class="nav__login">
             <?php if (isset($_SESSION["username"])): ?>
-                <a href="administration.php" class="<?php echo($current_path == "administration.php" ? "nav__selected" : "") ?>">Administrace</a>
-                <a href="article_add.php" class="<?php echo($current_path == "article_add.php" ? "nav__selected" : "") ?>">Přidat článek</a>
+                <a href="administration_index.php" class="<?php echo(str_starts_with($current_path, "administration") ? "nav__selected" : "") ?>">Administration</a>
+                <a href="article_add.php" class="<?php echo($current_path == "article_add.php" ? "nav__selected" : "") ?>">Add article</a>
                 <a href="user_profile.php" class="nav__user">
                     <img src="<?= $_SESSION["picture"] ?>"/>
                     <span><?= $_SESSION["username"] ?></span>
                 </a>
             <?php else: ?>
-                <a href="login.php">PŘÍHLÁŠENÍ</a>
+                <a href="login.php">LOGIN</a>
             <?php endif; ?>
         </div>
         <div id="nav__mobile-menu" class="hide">
-            <a href="index.php" class="nav__link">ZPRÁVY</a>
-            <a href="categories.php" class="nav__link">KATEGORIE</a>
-            <a href="authors.php" class="nav__link">AUTOŘI</a>
+            <a href="index.php" class="nav__link">HOME</a>
+            <a href="categories.php" class="nav__link">CATEGORIES</a>
+            <a href="authors.php" class="nav__link">AUTHORS</a>
             <div id="mobile-menu__horizontal-line"></div>
             <?php if (isset($_SESSION["username"])): ?>
-                <a href="administration.php">Administrace</a>
-                <a href="article_add.php">Přidat článek</a>
+                <a href="administration_index.php">Administration</a>
+                <a href="article_add.php">Add article</a>
                 <a href="user_profile.php" class="nav__user">
                     <img src="<?= $_SESSION["picture"] ?>"/>
                     <span><?= $_SESSION["username"] ?></span>
                 </a>
             <?php else: ?>
-                <a href="login.php">PŘÍHLÁŠENÍ</a>
+                <a href="login.php">LOGIN</a>
             <?php endif; ?>
         </div>
         <div id="hamburger">
@@ -47,17 +47,13 @@ $current_path = substr($_SERVER["SCRIPT_NAME"], strrpos($_SERVER["SCRIPT_NAME"],
         </div>
     </nav>
     <script>
-        const hamburgerBtn = document.getElementById("hamburger");
-        const mobileMenu = document.getElementById("nav__mobile-menu");
+        const hamburgerBtn = document.querySelector("#hamburger");
+        const mobileMenu = document.querySelector("#nav__mobile-menu");
 
         hamburgerBtn.addEventListener("click", () => {
             mobileMenu.classList.contains("hide") ? mobileMenu.classList.remove("hide") : mobileMenu.classList.add("hide");
-        })
-
-        window.addEventListener("resize", () => {
-            if(window.innerWidth > 1000) {
-                mobileMenu.classList.add("hide");
-            }
+            const page = document.querySelector(".page");
+            page.style.marginTop !== "290px" ? page.style.marginTop = "290px" : page.style.marginTop = "0";
         })
     </script>
 </header>

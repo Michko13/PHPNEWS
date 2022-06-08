@@ -6,26 +6,32 @@ AuthService::InitAuth();
 $categoryRepository = new CategoryRepository();
 $categories = $categoryRepository->get_all_categories_name();
 
-if(!empty($_POST['title']) && !empty($_FILES['title-image']) && !empty($_POST['perex']) && !empty($_POST['category']) &&
+if(!empty($_POST['title']) && !empty($_FILES['title-image']) && !empty($_POST['title-image-title']) && !empty($_POST['perex']) && !empty($_POST['category']) &&
     !empty($_POST['content'])) {
     $articleRepository = new ArticleRepository();
     move_uploaded_file($_FILES['title-image']['tmp_name'], 'X:/www/PHPNEWS/uploads/' . $_FILES['title-image']['name']);
-    $articleRepository->add_article($_POST['title'], 'uploads/' . $_FILES['title-image']['name'],
+    $galleryRepository = new GalleryRepository();
+    $imageId = $galleryRepository->add_image($_POST['title-image-title'], 'uploads/' . $_FILES['title-image']['name']);
+    $articleRepository->add_article($_POST['title'], $imageId,
         $_POST['perex'], $_SESSION['id'], $_POST['category'], $_POST['content'], date("d. n. Y | H:i"), isset($_POST['publish']) ? 1 : 0);
 }
 ?>
 <body>
 <?php require_once 'components/navbar.php' ?>
 <div id="article-add-page" class="page">
-    <h1 class="page__title">Přidat článek</h1>
+    <h1 class="page__title">Add article</h1>
     <form action="" method="post" enctype="multipart/form-data">
         <div>
-            <label for="title-image">Titulní obrázek</label>
+            <label for="title-image">Title image</label>
             <input type="file" accept="image/png, image/jpeg" id="add-article-image" name="title-image" onchange="previewImage()" required>
             <img id="image-preview" src="#" style="display: none;">
         </div>
         <div>
-            <label for="title">Titulek</label>
+            <label for="title-image-title">Title image title</label>
+            <input type="text" name="title-image-title" required>
+        </div>
+        <div>
+            <label for="title">Title</label>
             <input type="text" name="title" required>
         </div>
         <div>
@@ -33,7 +39,7 @@ if(!empty($_POST['title']) && !empty($_FILES['title-image']) && !empty($_POST['p
             <textarea type="text" name="perex" required></textarea>
         </div>
         <div>
-            <label for="category">Kategorie</label>
+            <label for="category">Category</label>
             <select name="category" required>
                 <?php foreach ($categories as $category): ?>
                     <option value="<?= $category['id'] ?>"><?= $category['name'] ?></option>
@@ -41,11 +47,11 @@ if(!empty($_POST['title']) && !empty($_FILES['title-image']) && !empty($_POST['p
             </select>
         </div>
         <div>
-            <label for="publish">Zveřejnit</label>
+            <label for="publish">Publish</label>
             <input type="checkbox" name="publish">
         </div>
         <textarea class="editor" id="content" name="content" rows="30" cols="80"></textarea>
-        <button class="button" type="submit">Uložit a zveřejnit</button>
+        <button class="button" type="submit">Save and publish</button>
     </form>
 </div>
 </body>
@@ -60,10 +66,6 @@ if(!empty($_POST['title']) && !empty($_FILES['title-image']) && !empty($_POST['p
             imgTag.src = event.target.result;
 
             let i = new Image();
-
-            /*i.onload = function(){
-                alert( i.width+", "+i.height );
-            };*/
 
             i.src = event.target.result;
         };

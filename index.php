@@ -9,7 +9,6 @@ $main_article = $articles[0];
 <body>
 <?php require_once 'components/navbar.php' ?>
 <div id="index-page" class="page">
-    <h1 class="page__title">Nejnovější zprávy všeho druhu</h1>
     <hr class="horizontal-line">
     <div id="main-article" onclick="window.location.href='article_detail.php?id=<?= $main_article['article_id'] ?>'">
         <div class="main-article__title-image-container">

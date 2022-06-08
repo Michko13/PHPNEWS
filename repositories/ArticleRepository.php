@@ -1,6 +1,6 @@
 <?php
 
-require_once 'DatabaseManager.php';
+require_once 'services/DatabaseService.php';
 
 class ArticleRepository
 {
@@ -12,7 +12,7 @@ class ArticleRepository
             ':id' => $article_id
         ];
 
-        return DatabaseManager::get_instance()->exists($sql, $params);
+        return DatabaseService::get_instance()->exists($sql, $params);
     }
 
     public function get_article_author($author_id)
@@ -23,42 +23,47 @@ class ArticleRepository
             ':id' => $author_id
         ];
 
-        return DatabaseManager::get_instance()->selectOne($sql, $params)['author_id'];
+        return DatabaseService::get_instance()->selectOne($sql, $params)['author_id'];
     }
 
     public function get_articles_for_home_page()
     {
-        $sql = 'SELECT article.id AS article_id, article.title, article.title_image, article.perex, article.date_added,
+        $sql = 'SELECT article.id AS article_id, article.title, article.perex, article.date_added,
                 author.id AS author_id, author.name AS author_name, author.surname AS author_surname, 
-                category.id AS category_id, category.name AS category_name
+                category.id AS category_id, category.name AS category_name,
+                image.location AS title_image
                 FROM article 
                 INNER JOIN author ON author.id = article.author_id
                 INNER JOIN category ON category.id = article.category_id
+                INNER JOIN image on image.id = article.title_image_id
                 WHERE article.is_published = 1
                 ORDER BY article.id DESC';
 
-        return DatabaseManager::get_instance()->select($sql);
+        return DatabaseService::get_instance()->select($sql);
     }
 
     public function get_article($article_id)
     {
-        $sql = 'SELECT article.id AS article_id, article.title, article.title_image, article.perex, article.content, article.date_added, article.is_published,
+        $sql = 'SELECT article.id AS article_id, article.title, article.perex, article.content, article.date_added, article.is_published,
                 author.id AS author_id, author.name AS author_name, author.surname AS author_surname, author.picture as author_picture,
-                category.id AS category_id, category.name AS category_name
+                category.id AS category_id, category.name AS category_name,
+                image.location AS title_image
                 FROM article
                 INNER JOIN author ON author.id = article.author_id
                 INNER JOIN category ON category.id = article.category_id
+                INNER JOIN image on image.id = article.title_image_id
                 WHERE article.id = :id';
+
         $params = [
             ':id' => $article_id
         ];
 
-        return DatabaseManager::get_instance()->selectOne($sql, $params);
+        return DatabaseService::get_instance()->selectOne($sql, $params);
     }
 
     public function get_articles_by_category($category_id, $limit = null)
     {
-        $sql = 'SELECT article.id AS article_id, article.title, article.title_image, article.perex, article.date_added,
+        $sql = 'SELECT article.id AS article_id, article.title, article.title_image_id, article.perex, article.date_added,
                 author.id AS author_id, author.name AS author_name, author.surname AS author_surname, 
                 category.id AS category_id, category.name AS category_name
                 FROM article 
@@ -75,12 +80,12 @@ class ArticleRepository
             $sql .= ' LIMIT ' . $limit;
         }
 
-        return DatabaseManager::get_instance()->select($sql, $params);
+        return DatabaseService::get_instance()->select($sql, $params);
     }
 
     public function get_articles_by_author($author_id)
     {
-        $sql = 'SELECT article.id AS article_id, article.title, article.title_image, article.perex, article.date_added,
+        $sql = 'SELECT article.id AS article_id, article.title, article.title_image_id, article.perex, article.date_added,
                 author.id AS author_id, author.name AS author_name, author.surname AS author_surname, 
                 category.id AS category_id, category.name AS category_name
                 FROM article 
@@ -93,12 +98,12 @@ class ArticleRepository
             ':id' => $author_id
         ];
 
-        return DatabaseManager::get_instance()->select($sql, $params);
+        return DatabaseService::get_instance()->select($sql, $params);
     }
 
     public function get_recommended_articles($category_id, $limit = null)
     {
-        $sql = 'SELECT article.id AS article_id, article.title, article.title_image, article.perex, article.date_added,
+        $sql = 'SELECT article.id AS article_id, article.title, article.title_image_id, article.perex, article.date_added,
                 author.id AS author_id, author.name AS author_name, author.surname AS author_surname, 
                 category.id AS category_id, category.name AS category_name
                 FROM article 
@@ -114,12 +119,12 @@ class ArticleRepository
             $sql .= ' LIMIT ' . $limit;
         }
 
-        return DatabaseManager::get_instance()->select($sql, $params);
+        return DatabaseService::get_instance()->select($sql, $params);
     }
 
     public function get_articles_for_administration()
     {
-        $sql = 'SELECT article.id AS article_id, article.title, article.date_added, article.is_published,
+        $sql = 'SELECT article.id AS article_id, article.title, article.date_added, article.views, article.is_published,
                 author.id AS author_id, author.name AS author_name, author.surname AS author_surname, 
                 category.id AS category_id, category.name AS category_name
                 FROM article 
@@ -127,31 +132,31 @@ class ArticleRepository
                 INNER JOIN category ON category.id = article.category_id
                 ORDER BY article.date_added DESC';
 
-        return DatabaseManager::get_instance()->select($sql);
+        return DatabaseService::get_instance()->select($sql);
     }
 
     public function delete_article($article_id)
     {
-        $sql = 'SELECT title_image FROM article WHERE id = :id';
+        $sql = 'SELECT title_image_id FROM article WHERE id = :id';
 
         $params = [
             ':id' => $article_id
         ];
 
-        unlink(DatabaseManager::get_instance()->selectOne($sql, $params)['title_image']);
+        unlink(DatabaseService::get_instance()->selectOne($sql, $params)['title_image_id']);
 
         $sql = 'DELETE FROM article WHERE id = :id';
 
-        return DatabaseManager::get_instance()->delete($sql, $params);
+        return DatabaseService::get_instance()->delete($sql, $params);
     }
 
-    public function add_article($title, $title_image, $perex, $author_id, $category_id, $content, $date_added, $is_published)
+    public function add_article($title, $title_image_id, $perex, $author_id, $category_id, $content, $date_added, $is_published)
     {
-        $sql = 'INSERT INTO article VALUES (default, :title, :title_image, :perex, :author_id , :category_id, :content, :date_added, :is_published)';
+        $sql = 'INSERT INTO article VALUES (default, :title, :title_image_id, :perex, :author_id , :category_id, :content, :date_added, :is_published, 0)';
 
         $params = [
             ':title' => $title,
-            ':title_image' => $title_image,
+            ':title_image_id' => $title_image_id,
             ':perex' => $perex,
             ':author_id' => $author_id,
             ':category_id' => $category_id,
@@ -160,25 +165,37 @@ class ArticleRepository
             ':is_published' => $is_published
         ];
 
-        return DatabaseManager::get_instance()->insert($sql, $params);
+        return DatabaseService::get_instance()->insert($sql, $params);
     }
 
-    public function edit_article($id, $title, $title_image, $perex, $category_id, $content, $is_published)
+    public function edit_article($id, $title, $title_image_id, $perex, $category_id, $content, $is_published)
     {
-        $sql = 'UPDATE article SET title = :title, title_image = :title_image, perex = :perex, 
+        $sql = 'UPDATE article SET title = :title, title_image_id = :title_image_id, perex = :perex, 
                    category_id = :category_id, content = :content, is_published = :is_published
                 WHERE id = :id';
 
         $params = [
             ':id' => $id,
             ':title' => $title,
-            ':title_image' => $title_image,
+            ':title_image_id' => $title_image_id,
             ':perex' => $perex,
             ':category_id' => $category_id,
             ':content' => $content,
             ':is_published' => $is_published
         ];
 
-        return DatabaseManager::get_instance()->update($sql, $params);
+        return DatabaseService::get_instance()->update($sql, $params);
+    }
+
+    public function add_view($id)
+    {
+        $sql = 'UPDATE article SET views = views + 1
+                WHERE id = :id';
+
+        $params = [
+            ':id' => $id
+        ];
+
+        return DatabaseService::get_instance()->update($sql, $params);
     }
 }

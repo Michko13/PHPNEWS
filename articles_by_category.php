@@ -20,7 +20,7 @@ $categoryName = $categoryRepository->get_category_name($_GET['id']);
         <?php if(!empty($articles)): ?>
             <?php require_once("components/articles.php") ?>
         <?php else: ?>
-            <h3>V této kategorii ještě nejsou žádné články...</h3>
+            <h3>There are no articles in this category yet</h3>
         <?php endif; ?>
     </div>
 </div>

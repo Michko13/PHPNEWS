@@ -1,6 +1,6 @@
 <?php
 
-require_once 'DatabaseManager.php';
+require_once 'services/DatabaseService.php';
 
 class CommentRepository
 {
@@ -12,7 +12,7 @@ class CommentRepository
             ':id' => $article_id
         ];
 
-        return DatabaseManager::get_instance()->select($sql, $params);
+        return DatabaseService::get_instance()->select($sql, $params);
     }
 
     public function add_comment($article_id, $username, $content, $date_added)
@@ -26,7 +26,7 @@ class CommentRepository
             'date_added' => $date_added
         ];
 
-        return DatabaseManager::get_instance()->insert($sql, $params);
+        return DatabaseService::get_instance()->insert($sql, $params);
     }
 
     public function delete_comment($comment_id)
@@ -37,6 +37,6 @@ class CommentRepository
             ':id' => $comment_id
         ];
 
-        return DatabaseManager::get_instance()->delete($sql, $params);
+        return DatabaseService::get_instance()->delete($sql, $params);
     }
 }

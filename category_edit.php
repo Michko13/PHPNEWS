@@ -9,5 +9,5 @@ if(!empty($_POST['id']) && $categoryRepository->does_category_exist($_POST['id']
     $categoryRepository->edit_category($_POST['id'], $_POST['name'], $_POST['description']);
 }
 
-header('Location: administration.php#administration__articles');
+header('Location: administration_categories.php');
 die();
