@@ -16,6 +16,19 @@ if(!empty($_POST['title']) && !empty($_FILES['title-image']) && !empty($_POST['t
         $_POST['perex'], $_SESSION['id'], $_POST['category'], $_POST['content'], date("d. n. Y | H:i"), isset($_POST['publish']) ? 1 : 0);
 }
 ?>
+<?php require_once 'components/gallery_dialog.php' ?>
+<script>
+    const galleryDialog = document.querySelector("#gallery-dialog");
+
+    function openGalleryDialog() {
+        galleryDialog.style.display = "flex";
+    }
+</script>
+<?php if(!empty($_GET['page'])): ?>
+<script>
+    openGalleryDialog();
+</script>
+<?php endif; ?>
 <body>
 <?php require_once 'components/navbar.php' ?>
 <div id="article-add-page" class="page">
@@ -23,12 +36,8 @@ if(!empty($_POST['title']) && !empty($_FILES['title-image']) && !empty($_POST['t
     <form action="" method="post" enctype="multipart/form-data">
         <div>
             <label for="title-image">Title image</label>
-            <input type="file" accept="image/png, image/jpeg" id="add-article-image" name="title-image" onchange="previewImage()" required>
-            <img id="image-preview" src="#" style="display: none;">
-        </div>
-        <div>
-            <label for="title-image-title">Title image title</label>
-            <input type="text" name="title-image-title" required>
+            <div class="button" onclick="openGalleryDialog()">Choose from gallery</div>
+            <img id="article-image-preview" src="#" style="display: none;">
         </div>
         <div>
             <label for="title">Title</label>
@@ -56,18 +65,10 @@ if(!empty($_POST['title']) && !empty($_FILES['title-image']) && !empty($_POST['t
 </div>
 </body>
 <script>
-    function previewImage() {
-        const fileReader = new FileReader();
-        fileReader.readAsDataURL(document.getElementById("add-article-image").files[0]);
+    const imagePreview = document.querySelector("#article-image-preview")
 
-        fileReader.onload = function (event) {
-            const imgTag = document.getElementById("image-preview");
-            imgTag.style.display = "block";
-            imgTag.src = event.target.result;
-
-            let i = new Image();
-
-            i.src = event.target.result;
-        };
+    function selectImage(location) {
+        imagePreview.src = location;
+        imagePreview.style.display = "block";
     }
 </script>

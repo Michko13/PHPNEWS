@@ -87,7 +87,7 @@ a, a:hover, a:visited, a:active {
   background-color: var(--red);
 }
 
-input[type=text], input[type=password], textarea {
+input[type=text], input[type=password], input[type=number], textarea {
   width: 100%;
   border-radius: 12px;
   padding: 8px 14px;
@@ -95,6 +95,13 @@ input[type=text], input[type=password], textarea {
   border: none;
   resize: none;
   background-color: var(--light-gray);
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 .horizontal-line {
@@ -168,13 +175,16 @@ input[type=text], input[type=password], textarea {
 #image-detail-dialog .dialog__content {
   max-width: 900px;
 }
-#image-detail-dialog .dialog__content .dialog__content__body {
-  flex-direction: row;
+#image-detail-dialog .dialog__content .dialog__content__body #image-detail__src-container {
+  margin-right: 14px;
 }
 #image-detail-dialog .dialog__content .dialog__content__body #image-detail__metadata {
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+#image-detail-dialog .dialog__content .dialog__content__body .dialog__content__body__actions {
+  display: none;
 }
 #image-detail-dialog #image-detail__src-container {
   width: 100%;
@@ -184,6 +194,25 @@ input[type=text], input[type=password], textarea {
   width: 100%;
   aspect-ratio: 4/3;
   margin-right: 16px;
+}
+
+#alert-dialog .alert-dialog__actions {
+  display: flex;
+  justify-content: right;
+  margin-top: 10px;
+}
+#alert-dialog .alert-dialog__actions .button {
+  width: 80px;
+}
+
+#author-add-dialog img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+}
+
+#gallery-dialog .dialog__content {
+  max-width: 1024px;
 }
 
 header {
@@ -787,9 +816,6 @@ nav #hamburger .hamburger__bar {
 #administration-page .horizontal-line {
   margin: 24px 0;
 }
-#administration-page h2 {
-  margin: 16px 0;
-}
 #administration-page #administration__subpages {
   display: flex;
   gap: 16px;
@@ -843,33 +869,28 @@ nav #hamburger .hamburger__bar {
 #administration-page #administration__categories th, #administration-page #administration__categories td {
   width: 25%;
 }
-#administration-page #administration__gallery #administration__gallery-images {
+#administration__gallery #administration__gallery-images {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
 }
-@media (max-width: 907px) {
-  #administration-page #administration__gallery #administration__gallery-images {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
 @media (max-width: 632px) {
-  #administration-page #administration__gallery #administration__gallery-images {
+  #administration__gallery #administration__gallery-images {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 @media (max-width: 357px) {
-  #administration-page #administration__gallery #administration__gallery-images {
+  #administration__gallery #administration__gallery-images {
     grid-template-columns: 1fr;
   }
 }
-#administration-page #administration__gallery #administration__gallery-images img {
+#administration__gallery #administration__gallery-images img {
   width: 100%;
   aspect-ratio: 4/3;
   cursor: pointer;
   transition: 0.3s ease all;
 }
-#administration-page #administration__gallery #administration__gallery-page-controller {
+#administration__gallery #administration__gallery-page-controller {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -878,29 +899,25 @@ nav #hamburger .hamburger__bar {
   font-size: 20px;
   font-weight: 500;
 }
-#administration-page #administration__gallery #administration__gallery-page-controller .left-arrow {
+#administration__gallery #administration__gallery-page-controller .left-arrow {
   margin-right: 8px;
 }
-#administration-page #administration__gallery #administration__gallery-page-controller .right-arrow {
+#administration__gallery #administration__gallery-page-controller .right-arrow {
   margin-left: 8px;
 }
-#administration-page #administration__gallery #administration__gallery-page-controller .material-icons {
+#administration__gallery #administration__gallery-page-controller .material-icons {
   font-size: 36px;
+  cursor: pointer;
 }
 
-#alert-dialog .alert-dialog__actions {
-  display: flex;
-  justify-content: right;
-  margin-top: 10px;
-}
-#alert-dialog .alert-dialog__actions .button {
-  width: 80px;
-}
-
-#author-add-dialog img {
-  width: 100%;
-  max-height: 300px;
-  object-fit: contain;
+.page-number-input {
+  width: 24px !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  background-color: inherit !important;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 500;
 }
 
 #article-add-page form {
@@ -918,7 +935,7 @@ nav #hamburger .hamburger__bar {
 #article-add-page form > div {
   width: 100%;
 }
-#article-add-page form #image-preview {
+#article-add-page form #article-image-preview {
   width: 100%;
   max-width: 512px;
 }

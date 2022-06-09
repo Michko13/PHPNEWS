@@ -2,7 +2,7 @@
     <div class="dialog__content" style="max-width: 440px">
         <div class="dialog__content__header">
             <h2 class="dialog__title">Add new author</h2>
-            <span class="material-icons close-button" onclick="onDialogClose()">close</span>
+            <span class="material-icons close-button" onclick="onDialogClose('author-add-dialog')">close</span>
         </div>
         <form class="dialog__content__body" action="author_add.php" method="post" enctype="multipart/form-data">
             <label for="username">Username</label>
@@ -19,7 +19,7 @@
             <input type="file" accept="image/png, image/jpeg" id="add-author-picture" name="picture" onchange="previewPicture()" required>
             <img id="picture-preview" src="#" style="display: none;">
             <div class="dialog__content__body__actions">
-                <button class="button button-danger" type="button" onclick="onDialogClose()">Cancel</button>
+                <button class="button button-danger" type="button" onclick="onDialogClose('author-add-dialog')">Cancel</button>
                 <button class="button" type="submit">Add</button>
             </div>
         </form>

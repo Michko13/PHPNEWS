@@ -2,7 +2,7 @@
     <div class="dialog__content">
         <div class="dialog__content__header">
             <h2 class="dialog__title">Add new category</h2>
-            <span class="material-icons close-button" onclick="onDialogClose()">close</span>
+            <span class="material-icons close-button" onclick="onDialogClose('category-add-dialog')">close</span>
         </div>
         <form action="category_add.php" method="post" class="dialog__content__body">
             <div>
@@ -14,7 +14,7 @@
                 <textarea name="description" rows="4" required></textarea>
             </div>
             <div class="dialog__content__body__actions">
-                <button class="button button-danger" type="button" onclick="onDialogClose()">Cancel</button>
+                <button class="button button-danger" type="button" onclick="onDialogClose('category-add-dialog')">Cancel</button>
                 <button class="button" type="submit">Add</button>
             </div>
         </form>

@@ -2,7 +2,7 @@
     <div class="dialog__content">
         <div class="dialog__content__header">
             <h2 class="dialog__title">Add new image</h2>
-            <span class="material-icons close-button" onclick="onDialogClose()">close</span>
+            <span class="material-icons close-button" onclick="onDialogClose('image-add-dialog')">close</span>
         </div>
         <form action="image_add.php" method="post" enctype="multipart/form-data" class="dialog__content__body">
             <div>
@@ -15,7 +15,7 @@
                 <input type="text" name="title" required>
             </div>
             <div class="dialog__content__body__actions">
-                <button class="button button-danger" type="button" onclick="onDialogClose()">Cancel</button>
+                <button class="button button-danger" type="button" onclick="onDialogClose('image-add-dialog')">Cancel</button>
                 <button class="button" type="submit">Add</button>
             </div>
         </form>

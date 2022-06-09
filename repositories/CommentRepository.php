@@ -1,6 +1,6 @@
 <?php
 
-require_once 'services/DatabaseService.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/PHPNEWS/services/DatabaseService.php';
 
 class CommentRepository
 {
