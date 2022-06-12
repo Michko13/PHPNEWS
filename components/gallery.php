@@ -23,6 +23,7 @@ $images = $galleryRepository->get_one_page_of_gallery($page);
 <div id="ajax-wrapper">
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/PHPNEWS/components/image_add_dialog.php' ?>
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/PHPNEWS/components/image_detail_dialog.php' ?>
+    <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/PHPNEWS/components/alert_dialog.php' ?>
     <script>
         function openImageAddDialog() {
             const imageAddDialog = document.querySelector("#image-add-dialog");
@@ -30,7 +31,7 @@ $images = $galleryRepository->get_one_page_of_gallery($page);
             imageAddDialog.style.display = "flex";
         }
 
-        function openImageDetailDialog(location, title, dateAdded, fileName, fileType, fileSize, resolution, canChoose) {
+        function openImageDetailDialog(id, location, title, dateAdded, fileName, fileType, fileSize, resolution, canChoose, canDelete, imageArticleUsages, imageAuthorUsages) {
             const imageDetailDialog = document.querySelector("#image-detail-dialog");
             const imageDetail = document.querySelector("#image-detail__src");
             const imageDetailTitle = document.querySelector("#image-detail__metadata__title");
@@ -40,6 +41,10 @@ $images = $galleryRepository->get_one_page_of_gallery($page);
             const imageDetailFileSize = document.querySelector("#image-detail__metadata__file-size");
             const imageDetailResolution = document.querySelector("#image-detail__metadata__resolution");
             const imageDetailDialogActions = document.querySelector("#image-detail-dialog__actions");
+            const imageDetailDialogAdministrationActions = document.querySelector("#image-detail-dialog__administration-actions");
+            const imageDetailDeleteButton = document.querySelector("#delete-button");
+            const alertDialog = document.getElementById("alert-dialog");
+            const alertDialogMessage = document.getElementById("alert-dialog__message");
 
             imageDetail.src = location;
             imageDetailTitle.innerHTML = "<strong>Title:&nbsp</strong>" + title;
@@ -52,11 +57,38 @@ $images = $galleryRepository->get_one_page_of_gallery($page);
 
             if(canChoose) {
                 imageDetailDialogActions.style.display = "flex";
+            } else {
+                imageDetailDialogAdministrationActions.style.display = "flex";
+
+                imageDetailDeleteButton.addEventListener("click", () => {
+                    if(canDelete) {
+                        window.location.href = `image_delete.php?id=${id}`;
+                    } else {
+                        alertDialogMessage.innerHTML = `<strong>Cannot delete an image that is being used</strong>`;
+
+                        if(imageArticleUsages.length > 0) {
+                            alertDialogMessage.innerHTML += `<p>Following articles are using this image</p>`;
+                        }
+                        imageArticleUsages.forEach((id, index) => {
+                            alertDialogMessage.innerHTML += `<a href="article_detail.php?id=${id}" style="margin-right: 4px">${index + 1},&nbsp</a>`
+                        })
+
+                        if(imageAuthorUsages.length > 0) {
+                            alertDialogMessage.innerHTML += `<p>Following authors are using this image:</p>`;
+
+                        }
+                        imageAuthorUsages.forEach((id, index) => {
+                            alertDialogMessage.innerHTML += `<a href="articles_by_author.php?id=${id}" style="margin-right: 4px">${index + 1},&nbsp</a>`
+                        })
+
+                        alertDialog.style.display = "flex";
+                    }
+                })
             }
 
             const chooseButton = document.querySelector("#choose-button");
             chooseButton.addEventListener("click", () => {
-                selectImage(location)
+                selectImageFromGallery(id, location);
                 const imageAddDialog = document.querySelector("#image-add-dialog");
                 const galleryDialog = document.querySelector("#gallery-dialog");
                 imageAddDialog.style.display = "none";
@@ -65,21 +97,31 @@ $images = $galleryRepository->get_one_page_of_gallery($page);
             })
         }
     </script>
-    <div id="administration__gallery">
-        <div id="administration__gallery-images">
+    <div id="gallery">
+        <div id="gallery__images">
             <?php foreach ($images as $image): ?>
-                <?php $metadata = exif_read_data('C:\xampp\htdocs\PHPNEWS\\' . $image['location']) ?>
-                <img src="<?= $image['location'] ?>" onclick="openImageDetailDialog(
+                <?php
+                $metadata = exif_read_data('C:\xampp\htdocs\PHPNEWS\\' . $image['location']);
+                $imageArticleUsages = $galleryRepository->image_article_usages($image['id']);
+                $imageAuthorUsages = $galleryRepository->image_author_usages($image['id']);
+                ?>
+
+                <img src="<?= $image['location'] ?>" onclick="openImageDetailDialog(<?= $image['id'] ?>,
                         '<?= $image['location'] ?>', '<?= $image['title'] ?>', '<?= $metadata['FileDateTime'] ?>',
                         '<?= $metadata['FileName'] ?>', '<?= $metadata['MimeType'] ?>', '<?= $metadata['FileSize'] ?>',
                         '<?= $metadata["COMPUTED"]['Width'] . ' x ' . $metadata["COMPUTED"]['Height'] . ' px' ?>',
-                         <?= (str_starts_with($current_path, 'administration_gallery.php')) ? 'false' : 'true' ?>)"/>
+                         <?= !(str_starts_with($current_path, 'administration_gallery.php')) ? 'true' : 'false' ?>,
+                         <?= (count($imageArticleUsages) === 0 && count($imageAuthorUsages) === 0) ? 'true' : 'false' ?>,
+                         <?= json_encode(array_column($imageArticleUsages, 'id')) ?>,
+                         <?= json_encode(array_column($imageAuthorUsages, 'id')) ?>)"/>
             <?php endforeach; ?>
         </div>
-        <div id="administration__gallery-page-controller">
+        <div id="gallery__page-controller">
             <div class="material-icons left-arrow" onclick="previousPage()">chevron_left</div>
-            <input type="number" class="page-number-input" id="page-number-input" value="<?= $page ?>"
-                   onchange="onPageNumberChange()"> / <?= $amountOfPages ?>
+            <input type="number" class="page-number-input" id="page-number-input" value="<?= count($images) > 0 ? $page : 0 ?>"
+                   onchange="onPageNumberChange()">
+            <span>/</span>
+            <input type="number" class="page-number-input" value="<?= $amountOfPages ?>" readonly>
             <div class="material-icons right-arrow" onclick="nextPage()">chevron_right</div>
         </div>
         <script>

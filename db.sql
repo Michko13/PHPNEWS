@@ -68,7 +68,7 @@ CREATE TABLE `author` (
   `username` varchar(64) COLLATE utf8_czech_ci NOT NULL,
   `password` varchar(64) COLLATE utf8_czech_ci NOT NULL,
   `name` varchar(50) COLLATE utf8_czech_ci NOT NULL,
-  `surname` varchar(50) COLLATE utf8_czech_ci NOT NULL,
+  `lastname` varchar(50) COLLATE utf8_czech_ci NOT NULL,
   `bio` varchar(250) COLLATE utf8_czech_ci NOT NULL,
   `picture` text COLLATE utf8_czech_ci NOT NULL,
   `is_admin` tinyint(1) NOT NULL
@@ -78,7 +78,7 @@ CREATE TABLE `author` (
 -- Dumping data for table `author`
 --
 
-INSERT INTO `author` (`id`, `username`, `password`, `name`, `surname`, `bio`, `picture`, `is_admin`) VALUES
+INSERT INTO `author` (`id`, `username`, `password`, `name`, `lastname`, `bio`, `picture`, `is_admin`) VALUES
 (1, 'Bajatak', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 'Michal', 'Bárta', '19yo Competetive LoR player & streamer\r\nSeasonals Champion Top 16 Worlds', 'uploads/farta.jpg', 0),
 (2, 'Kopec', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 'Michal', 'Kopecký', 'Michal Kopecký skáče z okna na ženský.', 'uploads/chrome_omSro4bU6C.png', 1),
 (3, 'Diahex', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 'Jakub', 'Chrpa', 'Zdravíčko, tady Jacob Chrpys. Mám rád PHP, velké poprsí a pořádný METAL!!', 'uploads/opera_AaqtPkg5Xj.jpg', 0),

@@ -8,7 +8,7 @@
             <div>
                 <label for="image">Image</label>
                 <input type="file" accept="image/png, image/jpeg" id="add-image" name="image" onchange="previewImage()" required>
-                <img id="image-preview" src="#" style="display: none;">
+                <img id="add-image-preview" class="image-preview" src="#" style="display: none;">
             </div>
             <div>
                 <label for="title">Title</label>
@@ -27,7 +27,7 @@
         fileReader.readAsDataURL(document.querySelector("#add-image").files[0]);
 
         fileReader.onload = function (event) {
-            const imgTag = document.querySelector("#image-preview");
+            const imgTag = document.querySelector("#add-image-preview");
             imgTag.style.display = "block";
             imgTag.src = event.target.result;
 

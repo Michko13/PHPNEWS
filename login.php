@@ -11,7 +11,11 @@ if(isset($_SESSION['username'])) {
 }
 
 if(!empty($_POST['username']) && !empty($_POST['password'])) {
-    $sql = 'SELECT * FROM author WHERE username = :username AND password = :password';
+    $sql = 'SELECT author.id, author.username, author.firstname, author.lastname, author.bio, author.is_admin,
+            image.location as image
+            FROM author
+            INNER JOIN image on image.id = author.image_id
+            WHERE username = :username AND password = :password';
 
     $result = DatabaseService::get_instance()->selectOne($sql, [
         ':username' => $_POST['username'],

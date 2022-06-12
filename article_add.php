@@ -6,38 +6,41 @@ AuthService::InitAuth();
 $categoryRepository = new CategoryRepository();
 $categories = $categoryRepository->get_all_categories_name();
 
-if(!empty($_POST['title']) && !empty($_FILES['title-image']) && !empty($_POST['title-image-title']) && !empty($_POST['perex']) && !empty($_POST['category']) &&
-    !empty($_POST['content'])) {
+if ((!strlen($_FILES['title-image-from-upload']['full_path']) > 0 || !empty($_POST['title-image-from-gallery'])) &&
+    !empty($_POST['title']) && !empty($_POST['perex']) && !empty($_POST['category']) && !empty($_POST['content'])) {
+
+    $imageId = 0;
+
     $articleRepository = new ArticleRepository();
-    move_uploaded_file($_FILES['title-image']['tmp_name'], 'X:/www/PHPNEWS/uploads/' . $_FILES['title-image']['name']);
-    $galleryRepository = new GalleryRepository();
-    $imageId = $galleryRepository->add_image($_POST['title-image-title'], 'uploads/' . $_FILES['title-image']['name']);
+    if (!empty($_POST['title-image-from-gallery'])) {
+        $imageId = $_POST['title-image-from-gallery'];
+    } else {
+        $galleryRepository = new GalleryRepository();
+        $imageId = $galleryRepository->save_image_to_disk($_FILES['title-image-from-upload'], $_POST['title']);
+    }
+
     $articleRepository->add_article($_POST['title'], $imageId,
         $_POST['perex'], $_SESSION['id'], $_POST['category'], $_POST['content'], date("d. n. Y | H:i"), isset($_POST['publish']) ? 1 : 0);
 }
 ?>
-<?php require_once 'components/gallery_dialog.php' ?>
-<script>
-    const galleryDialog = document.querySelector("#gallery-dialog");
-
-    function openGalleryDialog() {
-        galleryDialog.style.display = "flex";
-    }
-</script>
-<?php if(!empty($_GET['page'])): ?>
-<script>
-    openGalleryDialog();
-</script>
-<?php endif; ?>
 <body>
 <?php require_once 'components/navbar.php' ?>
+<?php require_once 'components/gallery_dialog.php' ?>
 <div id="article-add-page" class="page">
     <h1 class="page__title">Add article</h1>
     <form action="" method="post" enctype="multipart/form-data">
         <div>
             <label for="title-image">Title image</label>
-            <div class="button" onclick="openGalleryDialog()">Choose from gallery</div>
-            <img id="article-image-preview" src="#" style="display: none;">
+            <div id="title-image-options">
+                <div class="button" onclick="openGalleryDialog()">Choose from gallery</div>
+                <label for="upload-new-image" class="button upload-new-image-button">
+                    <span style="font-weight: 400">Upload new image</span>
+                    <input type="file" accept="image/png, image/jpeg" name="title-image-from-upload"
+                           id="upload-new-image" style="display: none;" onchange="selectImageFromUpload()">
+                </label>
+                <input type="hidden" id="image-from-gallery" name="title-image-from-gallery">
+            </div>
+            <img id="image-preview" src="#" style="display: none;">
         </div>
         <div>
             <label for="title">Title</label>
@@ -63,12 +66,5 @@ if(!empty($_POST['title']) && !empty($_FILES['title-image']) && !empty($_POST['t
         <button class="button" type="submit">Save and publish</button>
     </form>
 </div>
+<script src="image_picking_scripts.js"></script>
 </body>
-<script>
-    const imagePreview = document.querySelector("#article-image-preview")
-
-    function selectImage(location) {
-        imagePreview.src = location;
-        imagePreview.style.display = "block";
-    }
-</script>

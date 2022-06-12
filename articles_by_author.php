@@ -15,7 +15,7 @@ $author = $authorRepository->get_author_name($_GET['id']);
 <body>
 <?php require_once 'components/navbar.php' ?>
 <div id="articled-by-author-page" class="page">
-    <h1 class="page__title">Articles made by <?= $author['name'] ?> <?= $author['surname'] ?></h1>
+    <h1 class="page__title">Articles made by <?= $author['firstname'] ?> <?= $author['lastname'] ?></h1>
     <div id="articles">
         <?php if(!empty($articles)): ?>
             <?php require_once("components/articles.php") ?>

@@ -17,7 +17,7 @@ $current_path = substr($_SERVER["SCRIPT_NAME"], strrpos($_SERVER["SCRIPT_NAME"],
                 <a href="administration_index.php" class="<?php echo(str_starts_with($current_path, "administration") ? "nav__selected" : "") ?>">Administration</a>
                 <a href="article_add.php" class="<?php echo($current_path == "article_add.php" ? "nav__selected" : "") ?>">Add article</a>
                 <a href="user_profile.php" class="nav__user">
-                    <img src="<?= $_SESSION["picture"] ?>"/>
+                    <img src="<?= $_SESSION["image"] ?>"/>
                     <span><?= $_SESSION["username"] ?></span>
                 </a>
             <?php else: ?>
@@ -33,7 +33,7 @@ $current_path = substr($_SERVER["SCRIPT_NAME"], strrpos($_SERVER["SCRIPT_NAME"],
                 <a href="administration_index.php">Administration</a>
                 <a href="article_add.php">Add article</a>
                 <a href="user_profile.php" class="nav__user">
-                    <img src="<?= $_SESSION["picture"] ?>"/>
+                    <img src="<?= $_SESSION["image"] ?>"/>
                     <span><?= $_SESSION["username"] ?></span>
                 </a>
             <?php else: ?>

@@ -14,26 +14,43 @@ $categoryRepository = new CategoryRepository();
 $article = $articleRepository->get_article($_GET['id']);
 $categories = $categoryRepository->get_all_categories_name();
 
-if (isset($_GET['id']) && isset($_POST['title']) && isset($_FILES['title-image']) && isset($_POST['perex']) && isset($_POST['category']) &&
-    isset($_POST['content'])) {
+if ((!strlen($_FILES['title-image-from-upload']['full_path']) > 0 || !empty($_POST['title-image-from-gallery'])) &&
+    !empty($_POST['title']) && !empty($_POST['perex']) && !empty($_POST['category']) && !empty($_POST['content'])) {
+
+    $imageId = $_POST['title-image-from-gallery'];
+
     $articleRepository = new ArticleRepository();
-    move_uploaded_file($_FILES['title-image']['tmp_name'], 'X:/www/PHPNEWS/uploads/' . $_FILES['title-image']['name']);
-    $articleRepository->edit_article($_GET['id'], $_POST['title'],
-        strlen($_FILES['title-image']['tmp_name']) > 0 ? 'uploads/' . $_FILES['title-image']['name'] : $article['title_image'],
+    if(strlen($_FILES['title-image-from-upload']['full_path']) > 0) {
+        $galleryRepository = new GalleryRepository();
+        $imageId = $galleryRepository->save_image_to_disk($_FILES['title-image-from-upload'], $_POST['title']);
+    } else if (!empty($_POST['title-image-from-gallery']) ) {
+        $imageId = $_POST['title-image-from-gallery'];
+    }
+
+    $articleRepository->edit_article($_GET['id'], $_POST['title'], $imageId,
         $_POST['perex'], $_POST['category'], $_POST['content'], isset($_POST['publish']) ? 1 : 0);
+
     header('Location: article_edit.php?id=' . $_GET['id']);
 }
 ?>
 <body>
 <?php require_once 'components/navbar.php' ?>
+<?php require_once 'components/gallery_dialog.php' ?>
 <div id="article-add-page" class="page">
     <h1 class="page__title">Edit article</h1>
     <form action="" method="post" enctype="multipart/form-data">
         <div>
             <label for="title-image">Title image</label>
-            <input type="file" accept="image/png, image/jpeg" id="add-article-image" name="title-image"
-                   onchange="previewImage()">
-            <img id="image-preview" src=" <?= $article['title_image'] ?>">
+            <div id="title-image-options">
+                <div class="button" onclick="openGalleryDialog()">Choose from gallery</div>
+                <label for="upload-new-image" class="button upload-new-image-button">
+                    <span style="font-weight: 400">Upload new image</span>
+                    <input type="file" accept="image/png, image/jpeg" name="title-image-from-upload"
+                           id="upload-new-image" style="display: none;" onchange="selectImageFromUpload()">
+                </label>
+                <input type="hidden" id="image-from-gallery" name="title-image-from-gallery" value="<?= $article['title_image_id'] ?>">
+            </div>
+            <img id="image-preview" src="<?= $article['title_image'] ?>">
         </div>
         <div>
             <label for="title">Title</label>
@@ -61,15 +78,5 @@ if (isset($_GET['id']) && isset($_POST['title']) && isset($_FILES['title-image']
         <button class="button" type="submit">Save</button>
     </form>
 </div>
+<script src="image_picking_scripts.js"></script>
 </body>
-<script>
-    function previewImage() {
-        const fileReader = new FileReader();
-        fileReader.readAsDataURL(document.getElementById("add-article-image").files[0]);
-
-        fileReader.onload = function (event) {
-            const imgTag = document.getElementById("image-preview");
-            imgTag.src = event.target.result;
-        };
-    }
-</script>

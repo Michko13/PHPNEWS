@@ -10,22 +10,21 @@ $main_article = $articles[0];
 <?php require_once 'components/navbar.php' ?>
 <?php if(!empty($main_article)): ?>
     <div id="index-page" class="page">
-        <hr class="horizontal-line">
         <div id="main-article" onclick="window.location.href='article_detail.php?id=<?= $main_article['article_id'] ?>'">
-            <div class="main-article__title-image-container">
-                <img class="main-article__title-image" src="<?= $main_article["title_image"] ?>"/>
+            <div id="main-article__title-image-container">
+                <img id="main-article__title-image" src="<?= $main_article["title_image"] ?>"/>
             </div>
-            <div class="main-article__right-side">
+            <div id="main-article__right-side">
                 <div>
-                    <div class="main-article__title"><?= $main_article['title'] ?></div>
-                    <div class="main-article__perex"><?= $main_article['perex'] ?></div>
+                    <div id="main-article__title"><?= $main_article['title'] ?></div>
+                    <div id="main-article__perex"><?= $main_article['perex'] ?></div>
                 </div>
-                <div class="main-article__info">
+                <div id="main-article__info">
                     <div>
-                        <a class="main-article__category" href="articles_by_category.php?id=<?= $main_article['category_id']?>"><?= $main_article['category_name'] ?></a>
-                        <div class="main-article_date-added"><?= $main_article['date_added'] ?></div>
+                        <a id="main-article__category" href="articles_by_category.php?id=<?= $main_article['category_id']?>"><?= $main_article['category_name'] ?></a>
+                        <div id="main-article_date-added"><?= $main_article['date_added'] ?></div>
                     </div>
-                    <a class="main-article__author" href="articles_by_author.php?id=<?= $main_article['author_id'] ?>"><?= $main_article['author_name'] ?> <?= $main_article['author_surname'] ?></a>
+                    <a id="main-article__author" href="articles_by_author.php?id=<?= $main_article['author_id'] ?>"><?= $main_article['author_name'] ?> <?= $main_article['author_lastname'] ?></a>
                 </div>
             </div>
         </div>

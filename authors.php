@@ -12,8 +12,8 @@ $authors = $authorRepository->get_all_authors();
     <div id="authors">
         <?php foreach ($authors as $author): ?>
             <a class="author" href="articles_by_author.php?id=<?= $author['id'] ?>">
-                <img class="author__picture" src="<?= $author['picture'] ?>" />
-                <div class="author__name"><?= $author['name']?> <?= $author['surname']?></div>
+                <img class="author__picture" src="<?= $author['profile_image'] ?>" />
+                <div class="author__name"><?= $author['firstname']?> <?= $author['lastname']?></div>
                 <div class="author__bio"><?= $author['bio'] ?></div>
                 <div class="author__article-count">Articles: <span style="font-weight: 500"><?= $author['article_count'] ?></span></div>
             </a>

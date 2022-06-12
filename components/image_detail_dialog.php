@@ -28,6 +28,10 @@
                 <button class="button button-danger" onclick="onDialogClose('image-detail-dialog')">Cancel</button>
                 <button class="button" id="choose-button">Choose</button>
             </div>
+            <div class="dialog__content__body__actions" id="image-detail-dialog__administration-actions">
+                <button class="button button-danger" id="delete-button">Delete</button>
+                <button class="button" onclick="onDialogClose('image-detail-dialog')">Go back</button>
+            </div>
         </div>
     </div>
 </div>

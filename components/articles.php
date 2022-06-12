@@ -17,7 +17,7 @@ if(!isset($articles)) {
                         <a class="header__category" href="articles_by_category.php?id=<?= $article['category_id']?>"><?= $article['category_name'] ?></a>
                         <div class="header__date-added"><?= $article['date_added'] ?></div>
                     </div>
-                    <a class="header__author" href="articles_by_author.php?id=<?= $article['author_id'] ?>"><?= $article['author_name'] ?> <?= $article['author_surname'] ?></a>
+                    <a class="header__author" href="articles_by_author.php?id=<?= $article['author_id'] ?>"><?= $article['author_name'] ?> <?= $article['author_lastname'] ?></a>
                 </div>
             </div>
         </div>

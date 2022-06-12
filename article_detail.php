@@ -18,24 +18,24 @@ $articleRepository->add_view($_GET['id']);
 <?php require_once 'components/navbar.php' ?>
 <div id="article-detail-page" class="page">
     <div id="article-detail-page__left-side">
-        <div class="article-detail">
-            <h1 class="article-detail__title"><?= $article['title'] ?></h1>
-            <img class="article-detail__title-image"
+        <div id="article-detail">
+            <h1 id="article-detail__title"><?= $article['title'] ?></h1>
+            <img id="article-detail__title-image"
                  src="<?= $article['title_image'] ?>">
-            <div class="article-detail__info">
+            <div id="article-detail__info">
                 <div>
-                    <a class="article-detail__category"
+                    <a id="article-detail__category"
                        href="articles_by_category.php?id=<?= $article['category_id'] ?>"><?= $article['category_name'] ?></a>
-                    <div class="article-detail__date-added"><?= $article['date_added'] ?></div>
+                    <div id="article-detail__date-added"><?= $article['date_added'] ?></div>
                 </div>
-                <a class="article-detail__author" href="articles_by_author.php?id=<?= $article['author_id'] ?>">
-                    <img class="article-detail__author__picture"
-                         src="<?= $article['author_picture'] ?>"/>
-                    <div class="article-detail__author__name"><?= $article['author_name'] ?> <?= $article['author_surname'] ?></div>
+                <a id="article-detail__author" href="articles_by_author.php?id=<?= $article['author_id'] ?>">
+                    <img id="article-detail__author__picture"
+                         src="<?= $article['author_image'] ?>"/>
+                    <div id="article-detail__author__name"><?= $article['author_name'] ?> <?= $article['author_lastname'] ?></div>
                 </a>
             </div>
-            <div class="article-detail__perex"><?= $article['perex'] ?></div>
-            <div class="article-detail__content"><?= $article['content'] ?></div>
+            <div id="article-detail__perex"><?= $article['perex'] ?></div>
+            <div id="article-detail__content"><?= $article['content'] ?></div>
         </div>
         <hr class="horizontal-line">
         <h2 class="comments-title">Comments (<?= count($comments) ?>)</h2>
@@ -71,8 +71,8 @@ $articleRepository->add_view($_GET['id']);
     </div>
     <div id="article-detail-page__right-side">
         <div id="article-recommendations">
-            <h4 class="article-recommendations__title">Recommended</h4>
-            <div class="article-recommendations__articles">
+            <h4 id="article-recommendations__title">Recommended</h4>
+            <div id="article-recommendations__articles">
                 <?php foreach ($recommendedArticles as $recommendedArticle): ?>
                     <?php if ($recommendedArticle['article_id'] != $article['article_id']): ?>
                         <a class="recommended-article"

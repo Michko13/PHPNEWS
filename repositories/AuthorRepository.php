@@ -6,7 +6,8 @@ class AuthorRepository
 {
     public function does_author_exist($author_id)
     {
-        $sql = 'SELECT null FROM author WHERE id = :id';
+        $sql = 'SELECT null FROM author
+                WHERE id = :id';
 
         $params = [
             ':id' => $author_id
@@ -17,8 +18,11 @@ class AuthorRepository
 
     public function get_all_authors()
     {
-        $sql = 'SELECT author.*, COUNT(article.id) as article_count
-                FROM author LEFT JOIN article on article.author_id = author.id
+        $sql = 'SELECT author.*, COUNT(article.id) AS article_count,
+                image.location as profile_image
+                FROM author
+                LEFT JOIN article on article.author_id = author.id
+                INNER JOIN image on image.id = author.image_id
                 GROUP BY author.id';
 
         return DatabaseService::get_instance()->select($sql);
@@ -26,7 +30,7 @@ class AuthorRepository
 
     public function get_author_name($id)
     {
-        $sql = 'SELECT name, surname FROM author WHERE id = :id';
+        $sql = 'SELECT firstname, lastname FROM author WHERE id = :id';
 
         $params = [
             ':id' => $id
@@ -35,33 +39,33 @@ class AuthorRepository
         return DatabaseService::get_instance()->selectOne($sql, $params);
     }
 
-    public function add_author($username, $password, $name, $surname, $bio, $picture)
+    public function add_author($username, $password, $firstname, $lastname, $bio, $image_id)
     {
         $sql = 'INSERT INTO author SET username = :username, password = :password, 
-                       name = :name, surname = :surname, bio = :bio, picture = :picture, is_admin = :is_admin';
+                       firstname = :firstname, lastname = :lastname, bio = :bio, image_id = :image_id, is_admin = :is_admin';
 
         $params = [
             ':username' => $username,
             ':password' => $password,
-            ':name' => $name,
-            ':surname' => $surname,
+            ':firstname' => $firstname,
+            ':lastname' => $lastname,
             ':bio' => $bio,
-            ':picture' => $picture,
+            ':image_id' => $image_id,
             ':is_admin' => '0'
         ];
 
         return DatabaseService::get_instance()->insert($sql, $params);
     }
 
-    public function edit_author($username, $name, $surname, $bio, $picture)
+    public function edit_author($username, $firstname, $lastname, $bio, $picture)
     {
-        $sql = 'UPDATE author SET username = :username, name = :name, surname = :surname, bio = :bio, picture = :picture WHERE id = :id';
+        $sql = 'UPDATE author SET username = :username, firstname = :firstname, lastname = :lastname, bio = :bio, picture = :picture WHERE id = :id';
 
         $params = [
             'id' => $_SESSION['id'],
             ':username' => $username,
-            ':name' => $name,
-            ':surname' => $surname,
+            ':firstname' => $firstname,
+            ':lastname' => $lastname,
             ':bio' => $bio,
             ':picture' => $picture
         ];
@@ -71,7 +75,7 @@ class AuthorRepository
         if($result > 0) {
             $_SESSION['username'] = $username;
             $_SESSION['name'] = $name;
-            $_SESSION['surname'] = $surname;
+            $_SESSION['lastname'] = $lastname;
             $_SESSION['bio'] = $bio;
             $_SESSION['picture'] = $picture;
         }

@@ -46,8 +46,8 @@ $categories = $categoryRepository->get_categories_for_administration();
     <div id="administration__subpages">
         <a class="button-text" href="administration_index.php">ARTICLES</a>
         <a class="button-text button-text-selected" href="administration_categories.php">CATEGORIES</a>
-        <a class="button-text" href="administration_gallery.php">GALLERY</a>
         <a class="button-text" href="administration_authors.php">AUTHORS</a>
+        <a class="button-text" href="administration_gallery.php">GALLERY</a>
         <a class="button-text" href="administration_customization.php">CUSTOMIZATION</a>
     </div>
     <hr class="horizontal-line">
@@ -61,7 +61,7 @@ $categories = $categoryRepository->get_categories_for_administration();
             <th>Description</th>
             <th>Articles</th>
             <?php if ($_SESSION['is_admin'] == 1): ?>
-                <th>Actions</th>
+                <th class="actions-header-cell">Actions</th>
             <?php endif; ?>
         </tr>
         </thead>
@@ -72,7 +72,7 @@ $categories = $categoryRepository->get_categories_for_administration();
                 <td class="administration-category__description"><?= $category['description'] ?></td>
                 <td class="administration-article__category"><?= $category['article_count'] ?></td>
                 <?php if ($_SESSION['is_admin'] == 1): ?>
-                    <td class="administration-article__actions">
+                    <td class="administration-table__actions">
                         <a class="button"
                            onclick="editCategory(<?= $category['id'] ?>, '<?= $category['name'] ?>', '<?= $category['description'] ?>')">Edit</a>
                         <a class="button button-danger"

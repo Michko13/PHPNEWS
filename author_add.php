@@ -2,13 +2,22 @@
 require_once 'autoloader.php';
 AuthService::InitAuth();
 
-$authorRepository = new AuthorRepository();
-if (!empty($_POST['username']) && !empty($_POST['name']) && !empty($_POST['surname']) && !empty($_POST['bio']) && !empty($_FILES['picture'])
-    && $_SESSION['is_admin'] == 1) {
-    move_uploaded_file($_FILES['picture']['tmp_name'], 'X:/www/PHPNEWS/uploads/' . $_FILES['picture']['name']);
+if ((!empty($_FILES['profile-image-from-upload']) || !empty($_POST['profile-image-from-gallery'])) && !empty($_POST['username']) &&
+    !empty($_POST['name']) && !empty($_POST['lastname']) && !empty($_POST['bio']) &&  $_SESSION['is_admin'] == 1) {
+
+    $imageId = 0;
+
+    $authorRepository = new AuthorRepository();
+    if (!empty($_POST['profile-image-from-gallery'])) {
+        $imageId = $_POST['profile-image-from-gallery'];
+    } else {
+        $galleryRepository = new GalleryRepository();
+        $imageId = $galleryRepository->save_image_to_disk($_FILES['profile-image-from-upload'], $_POST['username']);
+    }
+
     $authorRepository->add_author($_POST['username'], hash("sha256", $_POST['password']), $_POST['name'],
-        $_POST['surname'], $_POST['bio'], 'uploads/' . $_FILES['picture']['name']);
+        $_POST['lastname'], $_POST['bio'], $imageId);
 }
 
-header('Location: administration_index.php');
+header('Location: administration_authors.php');
 die();
