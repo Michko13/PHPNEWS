@@ -268,7 +268,7 @@ label {
   }
 }
 
-#author-add-dialog {
+#author-dialog {
   #profile-image-options {
     width: 100%;
     display: flex;
@@ -279,13 +279,11 @@ label {
     }
   }
 
-  img {
+  #image-preview {
     width: 100%;
-    max-height: 300px;
+    max-height: 200px;
     object-fit: contain;
   }
-
-
 }
 
 #gallery-dialog {

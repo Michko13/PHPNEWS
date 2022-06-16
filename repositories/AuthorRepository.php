@@ -19,10 +19,11 @@ class AuthorRepository
     public function get_all_authors()
     {
         $sql = 'SELECT author.*, COUNT(article.id) AS article_count,
-                image.location as profile_image
+                image.location AS profile_image,
+                image.id AS profile_image_id
                 FROM author
-                LEFT JOIN article on article.author_id = author.id
-                INNER JOIN image on image.id = author.image_id
+                LEFT JOIN article ON article.author_id = author.id
+                INNER JOIN image ON image.id = author.image_id
                 GROUP BY author.id';
 
         return DatabaseService::get_instance()->select($sql);
@@ -41,8 +42,9 @@ class AuthorRepository
 
     public function add_author($username, $password, $firstname, $lastname, $bio, $image_id)
     {
-        $sql = 'INSERT INTO author SET username = :username, password = :password, 
-                       firstname = :firstname, lastname = :lastname, bio = :bio, image_id = :image_id, is_admin = :is_admin';
+        $sql = 'INSERT INTO author 
+                SET username = :username, password = :password, firstname = :firstname,
+                lastname = :lastname, bio = :bio, image_id = :image_id, is_admin = :is_admin';
 
         $params = [
             ':username' => $username,
@@ -57,29 +59,31 @@ class AuthorRepository
         return DatabaseService::get_instance()->insert($sql, $params);
     }
 
-    public function edit_author($username, $firstname, $lastname, $bio, $picture)
+    public function edit_author($id, $username, $password, $firstname, $lastname, $bio, $image_id)
     {
-        $sql = 'UPDATE author SET username = :username, firstname = :firstname, lastname = :lastname, bio = :bio, picture = :picture WHERE id = :id';
+        $sql = 'UPDATE author 
+                SET username = :username, firstname = :firstname,
+                lastname = :lastname, bio = :bio, image_id = :image_id';
+
+        if($password != null) {
+            $sql = $sql . ', password = :password';
+        }
+
+        $sql = $sql . ' WHERE id = :id';
 
         $params = [
-            'id' => $_SESSION['id'],
+            ':id' => $id,
             ':username' => $username,
             ':firstname' => $firstname,
             ':lastname' => $lastname,
             ':bio' => $bio,
-            ':picture' => $picture
+            ':image_id' => $image_id,
         ];
 
-        $result = DatabaseService::get_instance()->update($sql, $params);
-
-        if($result > 0) {
-            $_SESSION['username'] = $username;
-            $_SESSION['name'] = $name;
-            $_SESSION['lastname'] = $lastname;
-            $_SESSION['bio'] = $bio;
-            $_SESSION['picture'] = $picture;
+        if($password != null) {
+            $params += [':password' => $password];
         }
 
-        return $result;
+        return DatabaseService::get_instance()->insert($sql, $params);
     }
 }

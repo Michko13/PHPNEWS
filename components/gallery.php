@@ -67,7 +67,7 @@ $images = $galleryRepository->get_one_page_of_gallery($page);
                         alertDialogMessage.innerHTML = `<strong>Cannot delete an image that is being used</strong>`;
 
                         if(imageArticleUsages.length > 0) {
-                            alertDialogMessage.innerHTML += `<p>Following articles are using this image</p>`;
+                            alertDialogMessage.innerHTML += `<p>Following articles are using this image:</p>`;
                         }
                         imageArticleUsages.forEach((id, index) => {
                             alertDialogMessage.innerHTML += `<a href="article_detail.php?id=${id}" style="margin-right: 4px">${index + 1},&nbsp</a>`

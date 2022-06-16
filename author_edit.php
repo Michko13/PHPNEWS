@@ -1,17 +1,21 @@
 <?php
-require_once 'components/header.php';
 require_once 'autoloader.php';
 AuthService::InitAuth();
 
-if(empty($_POST['username']) || empty($_POST['name']) || empty($_POST['lastname']) || empty($_POST['bio']) || !isset($_FILES['picture'])) {
-    header('Location: user_profile.php');
-    die();
+if (((!empty($_FILES['profile-image-from-upload']) && $_FILES['profile-image-from-upload']['full_path'] > 0) || !empty($_POST['profile-image-from-gallery']))
+    && !empty($_POST['id']) && !empty($_POST['username']) && !empty($_POST['firstname']) && !empty($_POST['lastname']) && !empty($_POST['bio'])) {
+
+    $imageId = $_POST['profile-image-from-gallery'];
+
+    $authorRepository = new AuthorRepository();
+    if((!empty($_FILES['profile-image-from-upload']) && $_FILES['profile-image-from-upload']['full_path'] > 0)) {
+        $galleryRepository = new GalleryRepository();
+        $imageId = $galleryRepository->save_image_to_disk($_FILES['profile-image-from-upload'], $_POST['username']);
+    }
+
+    $authorRepository->edit_author($_POST['id'], $_POST['username'], !empty($_POST['password']) ? hash("sha256", $_POST['password']) : null,
+        $_POST['firstname'], $_POST['lastname'], $_POST['bio'], $imageId);
 }
 
-$authorRepository = new AuthorRepository();
-move_uploaded_file($_FILES['picture']['tmp_name'], 'X:/www/PHPNEWS/uploads/' . $_FILES['picture']['name']);
-$authorRepository->edit_author($_POST['username'], $_POST['name'], $_POST['lastname'], $_POST['bio'],
-    strlen($_FILES['picture']['tmp_name']) > 0 ? 'uploads/' . $_FILES['picture']['name'] : $_SESSION['picture']);
-
-header('Location: user_profile.php');
+header('Location: administration_authors.php');
 die();

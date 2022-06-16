@@ -8,12 +8,44 @@ $authors = $authorRepository->get_all_authors();
 ?>
 <body>
 <?php require_once 'components/navbar.php' ?>
-<?php require_once 'components/author_add_dialog.php' ?>
+<?php require_once 'components/author_dialog.php' ?>
 <script>
-    const authorAddDialog = document.getElementById("author-add-dialog");
+    const authorDialog = document.querySelector("#author-dialog");
+    const authorDialogTitle = document.querySelector("#author-dialog__title");
+    const authorDialogForm = document.querySelector("#author-dialog__form");
+    const authorDialogId = document.querySelector("#author-dialog__id");
+    const authorDialogUsername = document.querySelector("#author-dialog__username");
+    const authorDialogImageLocation = document.querySelector("#image-preview");
+    const authorDialogImageId = document.querySelector("#image-from-gallery");
+    const authorDialogPassword = document.querySelector("#author-dialog__password");
+    const authorDialogFirstname = document.querySelector("#author-dialog__firstname")
+    const authorDialogLastname = document.querySelector("#author-dialog__lastname")
+    const authorDialogBio = document.querySelector("#author-dialog__bio")
+    const authorDialogSubmitButton = document.querySelector("#author-dialog__submit-button");
+
 
     function openAuthorAddDialog() {
-        authorAddDialog.style.display = "flex";
+        authorDialogTitle.innerText = "Add author";
+        authorDialogForm.action = "author_add.php";
+        authorDialogPassword.required = true;
+        authorDialogSubmitButton.innerText = "Add";
+        authorDialog.style.display = "flex";
+    }
+
+    function openAuthorEditDialog(id, username, image, imageId, firstname, lastname, bio) {
+        authorDialogTitle.innerText = "Edit author";
+        authorDialogId.value = id;
+        authorDialogUsername.value = username;
+        authorDialogImageLocation.src = image;
+        authorDialogImageLocation.style.display = "block";
+        authorDialogImageId.value = imageId;
+        authorDialogPassword.required = false;
+        authorDialogFirstname.value = firstname;
+        authorDialogLastname.value = lastname;
+        authorDialogBio.value = bio;
+        authorDialogForm.action = "author_edit.php";
+        authorDialogSubmitButton.innerText = "Edit";
+        authorDialog.style.display = "flex";
     }
 </script>
 <div id="administration-page" class="page">
@@ -52,7 +84,10 @@ $authors = $authorRepository->get_all_authors();
                 <td class="administration-author__articles"><?= $author['article_count'] ?></td>
                 <td class="administration-table__actions">
                     <?php if ($_SESSION['is_admin'] == 1 || $author['id'] == $_SESSION['id']): ?>
-                        <a class="button" href="author_edit.php?id=<?= $author['id'] ?>">Edit</a>
+                        <a class="button"
+                           onclick="openAuthorEditDialog('<?= $author['id'] ?>', '<?= $author['username'] ?>', '<?= $author['profile_image'] ?>',
+                                   '<?= $author['profile_image_id'] ?>', '<?= $author['firstname'] ?>', '<?= $author['lastname'] ?>',
+                                   '<?= escapeJavaScriptText($author['bio']) ?>')">Edit</a>
                         <a class="button button-danger"
                            href="article_delete.php?id=">Delete</a>
                     <?php endif; ?>

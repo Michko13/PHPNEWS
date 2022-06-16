@@ -8,27 +8,34 @@ $categories = $categoryRepository->get_categories_for_administration();
 ?>
 <body>
 <?php require_once 'components/navbar.php' ?>
-<?php require_once 'components/category_add_dialog.php' ?>
-<?php require_once 'components/category_edit_dialog.php' ?>
+<?php require_once 'components/category_dialog.php' ?>
 <?php require_once 'components/alert_dialog.php' ?>
 <script>
-    const categoryAddDialog = document.getElementById("category-add-dialog");
+    const categoryDialog = document.getElementById("category-dialog");
     const alertDialog = document.getElementById("alert-dialog");
     const alertDialogMessage = document.getElementById("alert-dialog__message");
-    const categoryEditDialog = document.getElementById("category-edit-dialog");
-    const categoryEditId = document.getElementById("category-edit-id");
-    const categoryEditName = document.getElementById("category-edit-name");
-    const categoryEditDescription = document.getElementById("category-edit-description");
+    const categoryDialogTitle = document.getElementById("category-dialog__title");
+    const categoryDialogForm = document.getElementById("category-dialog__form");
+    const categoryDialogId = document.getElementById("category-dialog__id");
+    const categoryDialogName = document.getElementById("category-dialog__name");
+    const categoryDialogDescription = document.getElementById("category-dialog__description");
+    const categoryDialogSubmitButton = document.getElementById("category-dialog__submit-button");
 
     function openCategoryAddDialog() {
-        categoryAddDialog.style.display = "flex";
+        categoryDialogTitle.innerText = "Add category";
+        categoryDialogForm.action = "category_add.php";
+        categoryDialogSubmitButton.innerText = "Add";
+        categoryDialog.style.display = "flex";
     }
 
-    function editCategory(id, name, description) {
-        categoryEditId.value = id;
-        categoryEditName.value = name;
-        categoryEditDescription.value = description;
-        categoryEditDialog.style.display = "flex";
+    function openCategoryEditDialog(id, name, description) {
+        categoryDialogTitle.innerText = "Edit category";
+        categoryDialogId.value = id;
+        categoryDialogName.value = name;
+        categoryDialogDescription.value = description;
+        categoryDialogForm.action = "category_edit.php";
+        categoryDialogSubmitButton.innerText = "Edit";
+        categoryDialog.style.display = "flex";
     }
 
     function deleteCategory(id, articleCount) {
@@ -74,7 +81,7 @@ $categories = $categoryRepository->get_categories_for_administration();
                 <?php if ($_SESSION['is_admin'] == 1): ?>
                     <td class="administration-table__actions">
                         <a class="button"
-                           onclick="editCategory(<?= $category['id'] ?>, '<?= $category['name'] ?>', '<?= $category['description'] ?>')">Edit</a>
+                           onclick="openCategoryEditDialog(<?= $category['id'] ?>, '<?= $category['name'] ?>', '<?= $category['description'] ?>')">Edit</a>
                         <a class="button button-danger"
                            onclick="deleteCategory(<?= $category['id'] ?>, <?= $category['article_count'] ?>)">Delete</a>
                     </td>

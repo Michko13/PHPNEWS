@@ -1,5 +1,6 @@
 <?php
 
+require_once $_SERVER['DOCUMENT_ROOT'] . '/PHPNEWS/services/HelperFunctions.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/PHPNEWS/services/DatabaseService.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/PHPNEWS/services/AuthService.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/PHPNEWS/repositories/ArticleRepository.php';

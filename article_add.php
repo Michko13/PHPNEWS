@@ -6,7 +6,7 @@ AuthService::InitAuth();
 $categoryRepository = new CategoryRepository();
 $categories = $categoryRepository->get_all_categories_name();
 
-if ((!strlen($_FILES['title-image-from-upload']['full_path']) > 0 || !empty($_POST['title-image-from-gallery'])) &&
+if (((!empty($_FILES['title-image-from-upload']) && $_FILES['title-image-from-upload']['full_path'] > 0) || !empty($_POST['title-image-from-gallery'])) &&
     !empty($_POST['title']) && !empty($_POST['perex']) && !empty($_POST['category']) && !empty($_POST['content'])) {
 
     $imageId = 0;
@@ -21,7 +21,7 @@ if ((!strlen($_FILES['title-image-from-upload']['full_path']) > 0 || !empty($_PO
 
     $articleRepository->add_article($_POST['title'], $imageId,
         $_POST['perex'], $_SESSION['id'], $_POST['category'], $_POST['content'], date("d. n. Y | H:i"), isset($_POST['publish']) ? 1 : 0);
-}
+} else
 ?>
 <body>
 <?php require_once 'components/navbar.php' ?>

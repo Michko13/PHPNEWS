@@ -217,17 +217,17 @@ label {
   width: 80px;
 }
 
-#author-add-dialog #profile-image-options {
+#author-dialog #profile-image-options {
   width: 100%;
   display: flex;
   gap: 8px;
 }
-#author-add-dialog #profile-image-options > * {
+#author-dialog #profile-image-options > * {
   flex: 1;
 }
-#author-add-dialog img {
+#author-dialog #image-preview {
   width: 100%;
-  max-height: 300px;
+  max-height: 200px;
   object-fit: contain;
 }
 

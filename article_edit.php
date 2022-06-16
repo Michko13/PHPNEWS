@@ -14,17 +14,15 @@ $categoryRepository = new CategoryRepository();
 $article = $articleRepository->get_article($_GET['id']);
 $categories = $categoryRepository->get_all_categories_name();
 
-if ((!strlen($_FILES['title-image-from-upload']['full_path']) > 0 || !empty($_POST['title-image-from-gallery'])) &&
+if (((!empty($_FILES['title-image-from-upload']) && $_FILES['title-image-from-upload']['full_path'] > 0) || !empty($_POST['title-image-from-gallery'])) &&
     !empty($_POST['title']) && !empty($_POST['perex']) && !empty($_POST['category']) && !empty($_POST['content'])) {
 
     $imageId = $_POST['title-image-from-gallery'];
 
     $articleRepository = new ArticleRepository();
-    if(strlen($_FILES['title-image-from-upload']['full_path']) > 0) {
+    if(!empty($_FILES['title-image-from-upload']) && $_FILES['title-image-from-upload']['full_path'] > 0) {
         $galleryRepository = new GalleryRepository();
         $imageId = $galleryRepository->save_image_to_disk($_FILES['title-image-from-upload'], $_POST['title']);
-    } else if (!empty($_POST['title-image-from-gallery']) ) {
-        $imageId = $_POST['title-image-from-gallery'];
     }
 
     $articleRepository->edit_article($_GET['id'], $_POST['title'], $imageId,
