@@ -26,16 +26,19 @@ $categories = $categoryRepository->get_categories_for_administration();
         categoryDialogForm.action = "category_add.php";
         categoryDialogSubmitButton.innerText = "Add";
         categoryDialog.style.display = "flex";
+        categoryDialogId.value = null;
+        categoryDialogName.value = null;
+        categoryDialogDescription.value = null;
     }
 
     function openCategoryEditDialog(id, name, description) {
         categoryDialogTitle.innerText = "Edit category";
-        categoryDialogId.value = id;
-        categoryDialogName.value = name;
-        categoryDialogDescription.value = description;
         categoryDialogForm.action = "category_edit.php";
         categoryDialogSubmitButton.innerText = "Edit";
         categoryDialog.style.display = "flex";
+        categoryDialogId.value = id;
+        categoryDialogName.value = name;
+        categoryDialogDescription.value = description;
     }
 
     function deleteCategory(id, articleCount) {

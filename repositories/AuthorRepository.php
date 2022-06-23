@@ -6,7 +6,8 @@ class AuthorRepository
 {
     public function does_author_exist($author_id)
     {
-        $sql = 'SELECT null FROM author
+        $sql = 'SELECT null 
+                FROM author
                 WHERE id = :id';
 
         $params = [
@@ -31,7 +32,9 @@ class AuthorRepository
 
     public function get_author_name($id)
     {
-        $sql = 'SELECT firstname, lastname FROM author WHERE id = :id';
+        $sql = 'SELECT firstname, lastname 
+                FROM author 
+                WHERE id = :id';
 
         $params = [
             ':id' => $id

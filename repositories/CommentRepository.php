@@ -6,7 +6,8 @@ class CommentRepository
 {
     public function get_article_comments($article_id)
     {
-        $sql = 'SELECT * FROM comment WHERE comment.article_id = :id';
+        $sql = 'SELECT * FROM comment 
+                WHERE comment.article_id = :id';
 
         $params = [
             ':id' => $article_id
@@ -17,7 +18,8 @@ class CommentRepository
 
     public function add_comment($article_id, $username, $content, $date_added)
     {
-        $sql = 'INSERT INTO comment SET article_id = :id, username = :username, content = :content, date_added = :date_added';
+        $sql = 'INSERT INTO 
+                comment SET article_id = :id, username = :username, content = :content, date_added = :date_added';
 
         $params = [
             ':id' => $article_id,
@@ -31,7 +33,8 @@ class CommentRepository
 
     public function delete_comment($comment_id)
     {
-        $sql = 'DELETE FROM comment where id = :id';
+        $sql = 'DELETE FROM comment 
+                WHERE id = :id';
 
         $params = [
             ':id' => $comment_id

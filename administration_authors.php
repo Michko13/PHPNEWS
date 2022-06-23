@@ -27,13 +27,24 @@ $authors = $authorRepository->get_all_authors();
     function openAuthorAddDialog() {
         authorDialogTitle.innerText = "Add author";
         authorDialogForm.action = "author_add.php";
-        authorDialogPassword.required = true;
         authorDialogSubmitButton.innerText = "Add";
         authorDialog.style.display = "flex";
+        authorDialogId.value = null;
+        authorDialogUsername.value = null;
+        authorDialogImageLocation.src = null;
+        authorDialogImageLocation.style.display = "none";
+        authorDialogImageId.value = null;
+        authorDialogPassword.required = true;
+        authorDialogFirstname.value = null;
+        authorDialogLastname.value = null;
+        authorDialogBio.value = null;
     }
 
     function openAuthorEditDialog(id, username, image, imageId, firstname, lastname, bio) {
         authorDialogTitle.innerText = "Edit author";
+        authorDialogForm.action = "author_edit.php";
+        authorDialogSubmitButton.innerText = "Edit";
+        authorDialog.style.display = "flex";
         authorDialogId.value = id;
         authorDialogUsername.value = username;
         authorDialogImageLocation.src = image;
@@ -43,9 +54,6 @@ $authors = $authorRepository->get_all_authors();
         authorDialogFirstname.value = firstname;
         authorDialogLastname.value = lastname;
         authorDialogBio.value = bio;
-        authorDialogForm.action = "author_edit.php";
-        authorDialogSubmitButton.innerText = "Edit";
-        authorDialog.style.display = "flex";
     }
 </script>
 <div id="administration-page" class="page">

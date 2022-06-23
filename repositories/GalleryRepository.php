@@ -41,7 +41,8 @@ class GalleryRepository
 
     public function get_one_page_of_gallery($page)
     {
-        $sql = 'SELECT * FROM image 
+        $sql = 'SELECT * 
+                FROM image 
                 LIMIT 16 OFFSET ' . max($page * 16 - 16, 0);
 
         return DatabaseService::get_instance()->select($sql);
@@ -49,7 +50,8 @@ class GalleryRepository
 
     public function get_amount_of_pages_in_gallery()
     {
-        $sql = 'SELECT Count(*) as count FROM image';
+        $sql = 'SELECT Count(*) AS count 
+                FROM image';
 
         $count = DatabaseService::get_instance()->selectOne($sql)['count'];
         $amountOfPages = (int)floor($count / 16) ;
@@ -63,7 +65,8 @@ class GalleryRepository
 
     public function delete_image($image_id)
     {
-        $sql = 'SELECT location FROM image
+        $sql = 'SELECT location 
+                FROM image
                 WHERE id = :id';
 
         $params = [
@@ -80,7 +83,8 @@ class GalleryRepository
 
     public function image_article_usages($image_id)
     {
-        $sql = 'SELECT id FROM article 
+        $sql = 'SELECT id 
+                FROM article 
                 WHERE title_image_id = :id';
 
         $params = [
@@ -92,7 +96,8 @@ class GalleryRepository
 
     public function image_author_usages($image_id)
     {
-        $sql = 'SELECT id FROM author 
+        $sql = 'SELECT id 
+                FROM author 
                 WHERE image_id = :id';
 
         $params = [

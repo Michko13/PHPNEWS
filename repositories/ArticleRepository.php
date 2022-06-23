@@ -6,7 +6,8 @@ class ArticleRepository
 {
     public function does_article_exist($article_id)
     {
-        $sql = 'SELECT null FROM article
+        $sql = 'SELECT null 
+                FROM article
                 WHERE id = :id';
 
         $params = [
@@ -18,7 +19,8 @@ class ArticleRepository
 
     public function get_article_author($author_id)
     {
-        $sql = 'SELECT author_id FROM article
+        $sql = 'SELECT author_id 
+                FROM article
                 WHERE id = :id';
 
         $params = [
@@ -148,7 +150,8 @@ class ArticleRepository
 
     public function delete_article($article_id)
     {
-        $sql = 'SELECT title_image_id FROM article
+        $sql = 'SELECT title_image_id 
+                FROM article
                 WHERE id = :id';
 
         $params = [
