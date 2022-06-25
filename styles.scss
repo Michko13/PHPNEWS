@@ -565,9 +565,13 @@ nav {
   }
 
   .article__perex {
+    display: -webkit-box;
     margin-top: 16px;
-    font-size: 1.1em;
+    font-size: 1.1rem;
     font-weight: 500;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 }
 
@@ -580,6 +584,7 @@ nav {
 
   #main-article__title-image-container {
     flex: 5;
+
     @media (max-width: 950px) {
       flex: 4;
     }
@@ -601,12 +606,12 @@ nav {
     flex: 4;
 
     #main-article__title {
-      font-size: 1.8em;
+      font-size: 1.7rem;
       font-weight: 600;
     }
 
     #main-article__perex {
-      font-size: 1.3em;
+      font-size: 1.15rem;
       font-weight: 500;
       margin: 8px 0;
     }

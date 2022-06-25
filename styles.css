@@ -490,9 +490,13 @@ nav #hamburger .hamburger__bar {
   margin-right: 1em;
 }
 .article .article__perex {
+  display: -webkit-box;
   margin-top: 16px;
-  font-size: 1.1em;
+  font-size: 1.1rem;
   font-weight: 500;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 #main-article {
@@ -525,11 +529,11 @@ nav #hamburger .hamburger__bar {
   flex: 4;
 }
 #main-article #main-article__right-side #main-article__title {
-  font-size: 1.8em;
+  font-size: 1.7rem;
   font-weight: 600;
 }
 #main-article #main-article__right-side #main-article__perex {
-  font-size: 1.3em;
+  font-size: 1.15rem;
   font-weight: 500;
   margin: 8px 0;
 }
