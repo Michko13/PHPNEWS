@@ -17,6 +17,19 @@ class AuthorRepository
         return DatabaseService::get_instance()->exists($sql, $params);
     }
 
+    public function does_author_have_any_articles($author_id)
+    {
+        $sql = 'SELECT null 
+                FROM article
+                WHERE author_id = :id';
+
+        $params = [
+            ':id' => $author_id
+        ];
+
+        return DatabaseService::get_instance()->exists($sql, $params);
+    }
+
     public function get_all_authors()
     {
         $sql = 'SELECT author.*, COUNT(article.id) AS article_count,
@@ -68,12 +81,6 @@ class AuthorRepository
                 SET username = :username, firstname = :firstname,
                 lastname = :lastname, bio = :bio, image_id = :image_id';
 
-        if($password != null) {
-            $sql = $sql . ', password = :password';
-        }
-
-        $sql = $sql . ' WHERE id = :id';
-
         $params = [
             ':id' => $id,
             ':username' => $username,
@@ -84,9 +91,24 @@ class AuthorRepository
         ];
 
         if($password != null) {
+            $sql = $sql . ', password = :password';
             $params += [':password' => $password];
         }
 
+        $sql = $sql . ' WHERE id = :id';
+
         return DatabaseService::get_instance()->insert($sql, $params);
+    }
+
+    public function delete_author($id)
+    {
+        $sql = 'DELETE FROM author
+                WHERE id = :id';
+
+        $params = [
+            ':id' => $id
+        ];
+
+        return DatabaseService::get_instance()->delete($sql, $params);
     }
 }

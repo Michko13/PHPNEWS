@@ -1,5 +1,7 @@
 <?php
 require_once 'components/header.php';
+require_once 'components/navbar.php';
+require_once 'components/author_dialog.php';
 require_once 'autoloader.php';
 AuthService::InitAuth();
 
@@ -7,8 +9,6 @@ $authorRepository = new AuthorRepository();
 $authors = $authorRepository->get_all_authors();
 ?>
 <body>
-<?php require_once 'components/navbar.php' ?>
-<?php require_once 'components/author_dialog.php' ?>
 <script>
     const authorDialog = document.querySelector("#author-dialog");
     const authorDialogTitle = document.querySelector("#author-dialog__title");
@@ -97,7 +97,7 @@ $authors = $authorRepository->get_all_authors();
                                    '<?= $author['profile_image_id'] ?>', '<?= $author['firstname'] ?>', '<?= $author['lastname'] ?>',
                                    '<?= escapeJavaScriptText($author['bio']) ?>')">Edit</a>
                         <a class="button button-danger"
-                           href="article_delete.php?id=">Delete</a>
+                           href="author_delete.php?id=<?= $author['id'] ?>">Delete</a>
                     <?php endif; ?>
                 </td>
             </tr>

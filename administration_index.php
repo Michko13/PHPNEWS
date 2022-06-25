@@ -1,5 +1,6 @@
 <?php
 require_once 'components/header.php';
+require_once 'components/navbar.php';
 require_once 'autoloader.php';
 AuthService::InitAuth();
 
@@ -7,7 +8,6 @@ $articleRepository = new ArticleRepository();
 $articles = $articleRepository->get_articles_for_administration();
 ?>
 <body>
-<?php require_once 'components/navbar.php' ?>
 <div id="administration-page" class="page">
     <h1 class="page__title">Administration</h1>
     <div id="administration__subpages">

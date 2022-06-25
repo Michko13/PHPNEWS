@@ -1,5 +1,6 @@
 <?php
 require_once 'components/header.php';
+require_once 'components/navbar.php';
 require_once 'autoloader.php';
 
 $articleRepository = new ArticleRepository();
@@ -15,7 +16,6 @@ $recommendedArticles = $articleRepository->get_recommended_articles($article['ca
 $articleRepository->add_view($_GET['id']);
 ?>
 <body>
-<?php require_once 'components/navbar.php' ?>
 <div id="article-detail-page" class="page">
     <div id="article-detail-page__left-side">
         <div id="article-detail">
@@ -70,6 +70,7 @@ $articleRepository->add_view($_GET['id']);
         </form>
     </div>
     <div id="article-detail-page__right-side">
+        <?php if(count($recommendedArticles) > 1): ?>
         <div id="article-recommendations">
             <h4 id="article-recommendations__title">Recommended</h4>
             <div id="article-recommendations__articles">
@@ -85,6 +86,7 @@ $articleRepository->add_view($_GET['id']);
                 <?php endforeach; ?>
             </div>
         </div>
+        <?php endif; ?>
         <div class="advert">
             <h4 class="advert__title">Ad</h4>
             <a href="https://www.sssvt.cz"><img class="advert__image" src="https://i.imgur.com/g6pNCyy.png"></a>

@@ -2,8 +2,8 @@
 require_once 'autoloader.php';
 AuthService::InitAuth();
 
-$categoryRepository = new CategoryRepository();
-if(!empty($_POST['name']) && !empty($_POST['description'])) {
+if(!empty($_POST['name']) && !empty($_POST['description']) && $_SESSION['is_admin'] == 1) {
+    $categoryRepository = new CategoryRepository();
     $categoryRepository->add_category($_POST['name'], $_POST['description']);
 }
 

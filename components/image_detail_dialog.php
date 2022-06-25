@@ -5,7 +5,7 @@
             <span class="material-icons close-button" onclick="onDialogClose('image-detail-dialog')">close</span>
         </div>
         <div class="dialog__content__body">
-            <div style="display: flex">
+            <div id="image-detail-container">
                 <div id="image-detail__src-container">
                     <img src="" id="image-detail__src"/>
                 </div>

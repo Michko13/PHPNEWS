@@ -1,5 +1,6 @@
 <?php
 require_once 'components/header.php';
+require_once 'components/navbar.php';
 require_once 'autoloader.php';
 AuthService::InitAuth();
 ?>

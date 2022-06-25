@@ -49,11 +49,12 @@ $current_path = substr($_SERVER["SCRIPT_NAME"], strrpos($_SERVER["SCRIPT_NAME"],
     <script>
         const hamburgerBtn = document.querySelector("#hamburger");
         const mobileMenu = document.querySelector("#nav__mobile-menu");
+        const marginTop = <?= isset($_SESSION['username']) ? "'265px'" : "'174px'" ?>
 
         hamburgerBtn.addEventListener("click", () => {
             mobileMenu.classList.contains("hide") ? mobileMenu.classList.remove("hide") : mobileMenu.classList.add("hide");
             const page = document.querySelector(".page");
-            page.style.marginTop !== "290px" ? page.style.marginTop = "290px" : page.style.marginTop = "0";
+            page.style.marginTop !== marginTop ? page.style.marginTop = marginTop : page.style.marginTop = "0";
         })
     </script>
 </header>

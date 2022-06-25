@@ -9,7 +9,7 @@ class GalleryRepository
         $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
         $randomName = bin2hex(random_bytes(8)) . ".jpg";
 
-        if($extension == 'png') {
+        if ($extension == 'png') {
             $image = imagecreatefrompng($file['tmp_name']);
             $bg = imagecreatetruecolor(imagesx($image), imagesy($image));
             imagefill($bg, 0, 0, imagecolorallocate($bg, 255, 255, 255));
@@ -39,24 +39,51 @@ class GalleryRepository
         return DatabaseService::get_instance()->insert($sql, $params);
     }
 
-    public function get_one_page_of_gallery($page)
+    public function get_one_page_of_gallery($page, $search = null)
     {
-        $sql = 'SELECT * 
-                FROM image 
+        if ($search == null) {
+            $sql = 'SELECT * 
+                FROM image
                 LIMIT 16 OFFSET ' . max($page * 16 - 16, 0);
 
-        return DatabaseService::get_instance()->select($sql);
+            return DatabaseService::get_instance()->select($sql);
+        }
+
+        $sql = "SELECT * 
+                FROM image
+                WHERE title LIKE :search
+                LIMIT 16 OFFSET " . max($page * 16 - 16, 0);
+
+        $params = [
+            ':search' => '%' . $search . '%'
+        ];
+
+        return DatabaseService::get_instance()->select($sql, $params);
     }
 
-    public function get_amount_of_pages_in_gallery()
+    public function get_amount_of_pages_in_gallery($search = null)
     {
-        $sql = 'SELECT Count(*) AS count 
-                FROM image';
+        $params = [];
 
-        $count = DatabaseService::get_instance()->selectOne($sql)['count'];
-        $amountOfPages = (int)floor($count / 16) ;
+        if($search == null) {
+            $sql = 'SELECT Count(*) AS count 
+                    FROM image';
 
-        if($count % 16 != 0) {
+        } else {
+            $sql = 'SELECT Count(*) AS count 
+                    FROM image
+                    WHERE title LIKE :search';
+
+            $params = [
+                ':search' => '%' . $search . '%'
+            ];
+        }
+
+        $count = DatabaseService::get_instance()->selectOne($sql, $params)['count'];
+
+        $amountOfPages = (int)floor($count / 16);
+
+        if ($count % 16 != 0) {
             $amountOfPages++;
         }
 

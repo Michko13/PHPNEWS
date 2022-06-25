@@ -1,5 +1,7 @@
 <?php
 require_once 'components/header.php';
+require_once 'components/navbar.php';
+require_once 'components/gallery_dialog.php';
 require_once 'autoloader.php';
 AuthService::InitAuth();
 
@@ -32,8 +34,6 @@ if (((!empty($_FILES['title-image-from-upload']) && $_FILES['title-image-from-up
 }
 ?>
 <body>
-<?php require_once 'components/navbar.php' ?>
-<?php require_once 'components/gallery_dialog.php' ?>
 <div id="article-add-page" class="page">
     <h1 class="page__title">Edit article</h1>
     <form action="" method="post" enctype="multipart/form-data">
@@ -76,5 +76,5 @@ if (((!empty($_FILES['title-image-from-upload']) && $_FILES['title-image-from-up
         <button class="button" type="submit">Save</button>
     </form>
 </div>
-<script src="image_picking_scripts.js"></script>
+<script src="scripts/image_picking_scripts.js"></script>
 </body>

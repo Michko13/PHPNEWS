@@ -9,7 +9,7 @@ if (!empty($_GET['page']) && is_numeric($_GET['page'])) {
 }
 
 $galleryRepository = new GalleryRepository();
-$amountOfPages = $galleryRepository->get_amount_of_pages_in_gallery();
+$amountOfPages = $galleryRepository->get_amount_of_pages_in_gallery($_GET['search'] ?? null);
 
 if ($page > $amountOfPages) {
     $page = $amountOfPages;
@@ -18,7 +18,7 @@ if ($page < 1) {
     $page = 1;
 }
 
-$images = $galleryRepository->get_one_page_of_gallery($page);
+$images = $galleryRepository->get_one_page_of_gallery($page, $_GET['search'] ?? null);
 ?>
 <div id="ajax-wrapper">
     <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/PHPNEWS/components/image_add_dialog.php' ?>
@@ -27,7 +27,6 @@ $images = $galleryRepository->get_one_page_of_gallery($page);
     <script>
         function openImageAddDialog() {
             const imageAddDialog = document.querySelector("#image-add-dialog");
-
             imageAddDialog.style.display = "flex";
         }
 
@@ -43,8 +42,8 @@ $images = $galleryRepository->get_one_page_of_gallery($page);
             const imageDetailDialogActions = document.querySelector("#image-detail-dialog__actions");
             const imageDetailDialogAdministrationActions = document.querySelector("#image-detail-dialog__administration-actions");
             const imageDetailDeleteButton = document.querySelector("#delete-button");
-            const alertDialog = document.getElementById("alert-dialog");
-            const alertDialogMessage = document.getElementById("alert-dialog__message");
+            const alertDialog = document.querySelector("#alert-dialog");
+            const alertDialogMessage = document.querySelector("#alert-dialog__message");
 
             imageDetail.src = location;
             imageDetailTitle.innerHTML = "<strong>Title:&nbsp</strong>" + title;
@@ -98,6 +97,11 @@ $images = $galleryRepository->get_one_page_of_gallery($page);
         }
     </script>
     <div id="gallery">
+        <div id="gallery__search">
+            <input id="gallery__search__text" type="text" placeholder="Title of image..." value="<?= $_GET['search'] ?? '' ?>">
+            <div id="gallery__search__close-button" class="material-icons" onclick="onSearchDelete()">close</div>
+            <button id="gallery__search__confirm-button" class="button" onclick="onSearch()">Search</button>
+        </div>
         <div id="gallery__images">
             <?php foreach ($images as $image): ?>
                 <?php
@@ -116,17 +120,18 @@ $images = $galleryRepository->get_one_page_of_gallery($page);
                          <?= json_encode(array_column($imageAuthorUsages, 'id')) ?>)"/>
             <?php endforeach; ?>
         </div>
-        <div id="gallery__page-controller">
+        <div id="gallery__page">
             <div class="material-icons left-arrow" onclick="previousPage()">chevron_left</div>
-            <input type="number" class="page-number-input" id="page-number-input" value="<?= count($images) > 0 ? $page : 0 ?>"
+            <input type="number" class="gallery__page-number" id="gallery__page-number-input" value="<?= count($images) > 0 ? $page : 0 ?>"
                    onchange="onPageNumberChange()">
             <span>/</span>
-            <input type="number" class="page-number-input" value="<?= $amountOfPages ?>" readonly>
+            <input type="number" class="gallery__page-number" value="<?= $amountOfPages ?>" readonly>
             <div class="material-icons right-arrow" onclick="nextPage()">chevron_right</div>
         </div>
         <script>
             let page = <?= $page ?>;
             let amountOfPages = <?= $amountOfPages ?>;
+            let search = <?= $_GET['search'] ?? "''" ?>;
 
             function previousPage() {
                 if (page - 1 > 0) {
@@ -156,18 +161,40 @@ $images = $galleryRepository->get_one_page_of_gallery($page);
                     }
                 };
 
-                req.open("GET", `components/gallery.php?page=${page}&currentPath=<?= $current_path ?>`, true);
+                let url = `components/gallery.php?page=${page}&currentPath=<?= $current_path ?>`;
+                if(search !== '') {
+                    url += `&search=${search}`;
+                }
+
+                req.open("GET", url, true);
                 req.send();
             }
 
             function onPageNumberChange() {
-                const pageNumberInput = document.querySelector("#page-number-input");
+                const pageNumberInput = document.querySelector("#gallery__page-number-input");
 
                 if (pageNumberInput.value > 0 && pageNumberInput.value <= amountOfPages) {
                     page = parseInt(pageNumberInput.value);
                     sendReq();
                 } else {
                     pageNumberInput.value = page;
+                }
+            }
+
+            function onSearch() {
+                const searchText = document.querySelector("#gallery__search__text");
+                if(searchText.value !== '') {
+                    search = searchText.value;
+                    sendReq();
+                }
+            }
+
+            function onSearchDelete() {
+                const searchText = document.querySelector("#gallery__search__text");
+                if(searchText.value !== '') {
+                    searchText.value = '';
+                    search = '';
+                    sendReq();
                 }
             }
         </script>
