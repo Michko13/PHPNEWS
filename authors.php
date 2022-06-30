@@ -1,12 +1,12 @@
 <?php
 require_once 'components/header.php';
-require_once 'components/navbar.php';
 require_once 'autoloader.php';
 
 $authorRepository = new AuthorRepository();
 $authors = $authorRepository->get_all_authors();
 ?>
 <body>
+<?php require_once 'components/navbar.php' ?>
 <div id="authors-page" class="page">
     <h1 class="page__title">Authors</h1>
     <div id="authors-page__list">

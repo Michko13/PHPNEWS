@@ -1,7 +1,5 @@
 <?php
 require_once 'components/header.php';
-require_once 'components/navbar.php';
-require_once 'components/author_dialog.php';
 require_once 'autoloader.php';
 AuthService::InitAuth();
 
@@ -9,6 +7,10 @@ $authorRepository = new AuthorRepository();
 $authors = $authorRepository->get_all_authors();
 ?>
 <body>
+<?php
+require_once 'components/navbar.php';
+require_once 'components/author_dialog.php';
+?>
 <script>
     const authorDialog = document.querySelector("#author-dialog");
     const authorDialogTitle = document.querySelector("#author-dialog__title");

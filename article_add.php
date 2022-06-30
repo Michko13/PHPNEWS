@@ -1,7 +1,5 @@
 <?php
 require_once 'components/header.php';
-require_once 'components/navbar.php';
-require_once 'components/gallery_dialog.php';
 require_once 'autoloader.php';
 AuthService::InitAuth();
 
@@ -26,6 +24,10 @@ if (((!empty($_FILES['title-image-from-upload']) && $_FILES['title-image-from-up
 } else
 ?>
 <body>
+<?php
+require_once 'components/navbar.php';
+require_once 'components/gallery_dialog.php';
+?>
 <div id="article-add-page" class="page">
     <h1 class="page__title">Add article</h1>
     <form action="" method="post" enctype="multipart/form-data">

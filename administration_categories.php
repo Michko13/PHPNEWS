@@ -1,8 +1,5 @@
 <?php
 require_once 'components/header.php';
-require_once 'components/navbar.php';
-require_once 'components/category_dialog.php';
-require_once 'components/alert_dialog.php';
 require_once 'autoloader.php';
 AuthService::InitAuth();
 
@@ -10,6 +7,11 @@ $categoryRepository = new CategoryRepository();
 $categories = $categoryRepository->get_categories_for_administration();
 ?>
 <body>
+<?php
+require_once 'components/navbar.php';
+require_once 'components/category_dialog.php';
+require_once 'components/alert_dialog.php';
+?>
 <script>
     const categoryDialog = document.getElementById("category-dialog");
     const alertDialog = document.getElementById("alert-dialog");
