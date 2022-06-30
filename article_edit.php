@@ -1,7 +1,5 @@
 <?php
 require_once 'components/header.php';
-require_once 'components/navbar.php';
-require_once 'components/gallery_dialog.php';
 require_once 'autoloader.php';
 AuthService::InitAuth();
 
@@ -32,6 +30,10 @@ if (((!empty($_FILES['title-image-from-upload']) && $_FILES['title-image-from-up
 
     header('Location: article_edit.php?id=' . $_GET['id']);
 }
+?>
+<?php
+require_once 'components/navbar.php';
+require_once 'components/gallery_dialog.php';
 ?>
 <body>
 <div id="article-add-page" class="page">

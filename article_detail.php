@@ -1,6 +1,5 @@
 <?php
 require_once 'components/header.php';
-require_once 'components/navbar.php';
 require_once 'autoloader.php';
 
 $articleRepository = new ArticleRepository();
@@ -16,6 +15,7 @@ $recommendedArticles = $articleRepository->get_recommended_articles($article['ca
 $articleRepository->add_view($_GET['id']);
 ?>
 <body>
+<?php require_once 'components/navbar.php' ?>
 <div id="article-detail-page" class="page">
     <div id="article-detail-page__left-side">
         <div id="article-detail">
