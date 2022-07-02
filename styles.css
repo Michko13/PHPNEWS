@@ -157,7 +157,6 @@ label {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
   margin-bottom: 12px;
 }
 .dialog .dialog__content .dialog__content__header .close-button {
@@ -844,14 +843,14 @@ nav #hamburger .hamburger__bar {
 }
 #login-page .form {
   width: 100%;
-  max-width: 300px;
+  max-width: 280px;
   display: flex;
   flex-direction: column;
-  padding: 32px;
+  padding: 22px;
   box-shadow: var(--box-shadow-1);
 }
 #login-page .form h2 {
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 #login-page .button {
   width: 100%;
@@ -918,13 +917,13 @@ nav #hamburger .hamburger__bar {
   max-width: 320px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   margin-left: auto;
   margin-bottom: 12px;
 }
 #gallery #gallery__search #gallery__search__close-button {
   position: absolute;
-  right: 90px;
+  right: 96px;
   cursor: pointer;
 }
 #gallery #gallery__images {

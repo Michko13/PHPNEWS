@@ -59,7 +59,7 @@ $images = $galleryRepository->get_one_page_of_gallery($page, $_GET['search'] ?? 
             } else {
                 imageDetailDialogAdministrationActions.style.display = "flex";
 
-                imageDetailDeleteButton.addEventListener("click", () => {
+                imageDetailDeleteButton.onclick = () => {
                     if(canDelete) {
                         window.location.href = `image_delete.php?id=${id}`;
                     } else {
@@ -82,18 +82,18 @@ $images = $galleryRepository->get_one_page_of_gallery($page, $_GET['search'] ?? 
 
                         alertDialog.style.display = "flex";
                     }
-                })
+                }
             }
 
             const chooseButton = document.querySelector("#choose-button");
-            chooseButton.addEventListener("click", () => {
+            chooseButton.onclick = () => {
                 selectImageFromGallery(id, location);
                 const imageAddDialog = document.querySelector("#image-add-dialog");
                 const galleryDialog = document.querySelector("#gallery-dialog");
                 imageAddDialog.style.display = "none";
                 imageDetailDialog.style.display = "none";
                 galleryDialog.style.display = "none";
-            })
+            }
         }
     </script>
     <div id="gallery">
