@@ -9,7 +9,8 @@ if (empty($_GET['id']) || !$categoryRepository->does_category_exist($_GET['id'])
 }
 
 $articleRepository = new ArticleRepository();
-$articles = $articleRepository->get_articles_by_category($_GET['id']);
+$articles = $articleRepository->get_articles_by_category($_GET['id'], 1);
+$amountOfPages = $articleRepository->get_amount_of_pages_by_category($_GET['id']);
 $categoryName = $categoryRepository->get_category_name($_GET['id']);
 ?>
 <body>
@@ -23,5 +24,14 @@ $categoryName = $categoryRepository->get_category_name($_GET['id']);
             <h3>There are no articles in this category yet</h3>
         <?php endif; ?>
     </div>
+    <button class="button" id="load-more-articles-button" onclick="nextPage()">
+        LOAD MORE
+    </button>
+    <script>
+        let amountOfPages = <?= $amountOfPages ?>;
+        let currentPath = "articles_by_category.php&categoryId=<?= $_GET['id'] ?>";
+    </script>
+    <script src="scripts/load_more_articles_scripts.js">
+    </script>
 </div>
 </body>

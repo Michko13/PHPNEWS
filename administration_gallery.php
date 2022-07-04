@@ -12,7 +12,6 @@ AuthService::InitAuth();
         <a class="button-text" href="administration_categories.php">CATEGORIES</a>
         <a class="button-text" href="administration_authors.php">AUTHORS</a>
         <a class="button-text button-text-selected" href="administration_gallery.php">GALLERY</a>
-        <a class="button-text" href="administration_customization.php">CUSTOMIZATION</a>
     </div>
     <hr class="horizontal-line">
     <div id="administration__actions">

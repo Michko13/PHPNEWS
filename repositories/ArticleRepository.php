@@ -30,8 +30,11 @@ class ArticleRepository
         return DatabaseService::get_instance()->selectOne($sql, $params)['author_id'];
     }
 
-    public function get_articles_for_home_page()
+    public function get_articles_for_home_page($page)
     {
+        $articlesPerPage = $page === 1 ? 11 : 10;
+        $offset = $page <= 2 ? 11 : 10;
+
         $sql = 'SELECT article.id AS article_id, article.title, article.perex, article.date_added,
                 author.id AS author_id, author.firstname AS author_name, author.lastname AS author_lastname, 
                 category.id AS category_id, category.name AS category_name,
@@ -41,9 +44,110 @@ class ArticleRepository
                 INNER JOIN category ON category.id = article.category_id
                 INNER JOIN image on image.id = article.title_image_id
                 WHERE article.is_published = 1
-                ORDER BY article.id DESC';
+                ORDER BY article.id DESC
+                LIMIT ' . $articlesPerPage . ' OFFSET ' . $page * $offset - $offset;
 
         return DatabaseService::get_instance()->select($sql);
+    }
+
+    public function get_articles_by_author($page, $author_id)
+    {
+        $sql = 'SELECT article.id AS article_id, article.title, article.perex, article.date_added,
+                author.id AS author_id, author.firstname AS author_name, author.lastname AS author_lastname, 
+                category.id AS category_id, category.name AS category_name,
+                image.location AS title_image
+                FROM article 
+                INNER JOIN author ON author.id = article.author_id
+                INNER JOIN category ON category.id = article.category_id
+                INNER JOIN image on image.id = article.title_image_id
+                WHERE author.id = :id
+                ORDER BY article.id DESC
+                LIMIT 10 OFFSET ' . $page * 10 - 10;
+
+        $params = [
+            ':id' => $author_id
+        ];
+
+        return DatabaseService::get_instance()->select($sql, $params);
+    }
+
+    public function get_articles_by_category($category_id, $page = null, $limit = null)
+    {
+        $sql = 'SELECT article.id AS article_id, article.title, article.perex, article.date_added,
+                author.id AS author_id, author.firstname AS author_name, author.lastname AS author_lastname, 
+                category.id AS category_id, category.name AS category_name,
+                image.location AS title_image
+                FROM article 
+                INNER JOIN author ON author.id = article.author_id
+                INNER JOIN category ON category.id = article.category_id
+                INNER JOIN image on image.id = article.title_image_id
+                WHERE category.id = :id
+                ORDER BY article.id DESC
+                LIMIT 10 OFFSET ' . $page * 10 - 10;
+
+        $params = [
+            ':id' => $category_id,
+        ];
+
+        return DatabaseService::get_instance()->select($sql, $params);
+    }
+
+    public function get_amount_of_pages_home_page()
+    {
+        $sql = 'SELECT Count(*) AS count
+                FROM article';
+
+        $count = DatabaseService::get_instance()->selectOne($sql)['count'];
+
+        $amountOfPages = (int)floor($count / 11);
+
+        if ($count % 11 != 0) {
+            $amountOfPages++;
+        }
+
+        return $amountOfPages;
+    }
+
+    public function get_amount_of_pages_by_author($author_id)
+    {
+        $sql = 'SELECT Count(*) AS count
+                FROM article
+                WHERE article.author_id = :id';
+
+        $params = [
+            ':id' => $author_id
+        ];
+
+        $count = DatabaseService::get_instance()->selectOne($sql, $params)['count'];
+
+        $amountOfPages = (int)floor($count / 11);
+
+        if ($count % 11 != 0) {
+            $amountOfPages++;
+        }
+
+        return $amountOfPages;
+    }
+
+    public function get_amount_of_pages_by_category($category_id)
+    {
+        $sql = 'SELECT Count(*) AS count
+                FROM article
+                WHERE article.category_id = :id';
+
+        $params = [
+            ':id' => $category_id
+        ];
+
+        $count = DatabaseService::get_instance()->selectOne($sql, $params)['count'];
+
+        $amountOfPages = (int)floor($count / 11);
+
+        if ($count % 11 != 0) {
+            $amountOfPages++;
+        }
+
+        return $amountOfPages;
     }
 
     public function get_article($article_id)
@@ -68,7 +172,7 @@ class ArticleRepository
         return DatabaseService::get_instance()->selectOne($sql, $params);
     }
 
-    public function get_articles_by_category($category_id, $limit = null)
+    public function get_recommended_articles($category_id, $current_article_id, $limit = null)
     {
         $sql = 'SELECT article.id AS article_id, article.title, article.perex, article.date_added,
                 author.id AS author_id, author.firstname AS author_name, author.lastname AS author_lastname, 
@@ -78,54 +182,12 @@ class ArticleRepository
                 INNER JOIN author ON author.id = article.author_id
                 INNER JOIN category ON category.id = article.category_id
                 INNER JOIN image on image.id = article.title_image_id
-                WHERE category.id = :id
-                ORDER BY article.date_added DESC';
+                WHERE article.id != :current_article_id
+                ORDER BY category_id = :category_id DESC';
 
         $params = [
-            ':id' => $category_id,
-        ];
-
-        if (is_numeric($limit)) {
-            $sql .= ' LIMIT ' . $limit;
-        }
-
-        return DatabaseService::get_instance()->select($sql, $params);
-    }
-
-    public function get_articles_by_author($author_id)
-    {
-        $sql = 'SELECT article.id AS article_id, article.title, article.perex, article.date_added,
-                author.id AS author_id, author.firstname AS author_name, author.lastname AS author_lastname, 
-                category.id AS category_id, category.name AS category_name,
-                image.location AS title_image
-                FROM article 
-                INNER JOIN author ON author.id = article.author_id
-                INNER JOIN category ON category.id = article.category_id
-                INNER JOIN image on image.id = article.title_image_id
-                WHERE author.id = :id
-                ORDER BY article.date_added DESC';
-
-        $params = [
-            ':id' => $author_id
-        ];
-
-        return DatabaseService::get_instance()->select($sql, $params);
-    }
-
-    public function get_recommended_articles($category_id, $limit = null)
-    {
-        $sql = 'SELECT article.id AS article_id, article.title, article.perex, article.date_added,
-                author.id AS author_id, author.firstname AS author_name, author.lastname AS author_lastname, 
-                category.id AS category_id, category.name AS category_name,
-                image.location AS title_image
-                FROM article 
-                INNER JOIN author ON author.id = article.author_id
-                INNER JOIN category ON category.id = article.category_id
-                INNER JOIN image on image.id = article.title_image_id
-                ORDER BY category_id = :id DESC';
-
-        $params = [
-            ':id' => $category_id,
+            ':category_id' => $category_id,
+            ':current_article_id' => $current_article_id
         ];
 
         if (is_numeric($limit)) {
@@ -143,7 +205,7 @@ class ArticleRepository
                 FROM article 
                 INNER JOIN author ON author.id = article.author_id
                 INNER JOIN category ON category.id = article.category_id
-                ORDER BY article.date_added DESC';
+                ORDER BY article.id DESC';
 
         return DatabaseService::get_instance()->select($sql);
     }

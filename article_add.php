@@ -7,7 +7,7 @@ $categoryRepository = new CategoryRepository();
 $categories = $categoryRepository->get_all_categories_name();
 
 if (((!empty($_FILES['title-image-from-upload']) && $_FILES['title-image-from-upload']['full_path'] > 0) || !empty($_POST['title-image-from-gallery'])) &&
-    !empty($_POST['title']) && !empty($_POST['perex']) && !empty($_POST['category']) && !empty($_POST['content'])) {
+!empty($_POST['title']) && !empty($_POST['perex']) && !empty($_POST['category']) && !empty($_POST['content'])) {
 
     $imageId = 0;
 
@@ -30,7 +30,7 @@ require_once 'components/gallery_dialog.php';
 ?>
 <div id="article-add-page" class="page">
     <h1 class="page__title">Add article</h1>
-    <form action="" method="post" enctype="multipart/form-data">
+    <form action="" method="post" enctype="multipart/form-data" onsubmit="return onFormSubmit()">
         <div>
             <label for="title-image">Title image</label>
             <div id="title-image-options">
@@ -42,7 +42,7 @@ require_once 'components/gallery_dialog.php';
                 </label>
                 <input type="hidden" id="image-from-gallery" name="title-image-from-gallery">
             </div>
-            <img id="image-preview" src="#" style="display: none;">
+            <img id="image-preview" style="display: none;">
         </div>
         <div>
             <label for="title">Title</label>
@@ -69,4 +69,17 @@ require_once 'components/gallery_dialog.php';
     </form>
 </div>
 <script src="scripts/image_picking_scripts.js"></script>
+<script>
+    const alertDialog = document.getElementById("alert-dialog");
+    const alertDialogMessage = document.getElementById("alert-dialog__message");
+
+    function onFormSubmit() {
+        if(imagePreview.src === "") {
+            alert("You have to choose a title image");
+            return false;
+        }
+
+        return true;
+    }
+</script>
 </body>

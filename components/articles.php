@@ -1,12 +1,41 @@
 <?php
-require_once 'components/header.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/PHPNEWS/autoloader.php';
 
-if(!isset($articles)) {
+$page = 1;
+if (!empty($_GET['page']) && is_numeric($_GET['page']) && !empty($_GET['currentPath'])) {
+    $page = $_GET['page'];
+    $articleRepository = new ArticleRepository();
+    switch ($_GET['currentPath']) {
+        case 'index.php':
+            $articles = $articleRepository->get_articles_for_home_page($page);
+            break;
+        case 'articles_by_author.php':
+            if(!empty($_GET['authorId'])) {
+                $articles = $articleRepository->get_articles_by_author($page, $_GET['authorId']);
+            } else {
+                $articles = [];
+            }
+            break;
+        case 'articles_by_category.php':
+            if(!empty($_GET['categoryId'])) {
+                $articles = $articleRepository->get_articles_by_category($page, $_GET['categoryId']);
+            } else {
+                $articles = [];
+            }
+            break;
+        default:
+            $articles = [];
+            break;
+    }
+
+} else if (!isset($articles)) {
+    require_once  $_SERVER['DOCUMENT_ROOT'] . '/PHPNEWS/components/header.php';
     $articles = [];
 }
+
 ?>
-<?php foreach ($articles as $article): ?>
-    <div class="article" onclick="window.location.href='article_detail.php?id=<?= $article['article_id'] ?>'">
+<?php foreach ($articles as $i => $article): ?>
+    <div class="article" <?php if($i === 0 && $page === 1) { echo "id='first-article'"; } ?> onclick="window.location.href='article_detail.php?id=<?= $article['article_id'] ?>'">
         <div class="article__header">
             <img class="article__header__title-image" src="<?= $article['title_image'] ?>"
                  onclick="window.location.href='article_detail.php?id=<?= $article['article_id'] ?>'"/>

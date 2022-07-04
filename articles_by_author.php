@@ -9,7 +9,8 @@ if (empty($_GET['id']) || !$authorRepository->does_author_exist($_GET['id'])) {
 }
 
 $articleRepository = new ArticleRepository();
-$articles = $articleRepository->get_articles_by_author($_GET['id']);
+$articles = $articleRepository->get_articles_by_author(1, $_GET['id']);
+$amountOfPages = $articleRepository->get_amount_of_pages_by_author($_GET['id']);
 $author = $authorRepository->get_author_name($_GET['id']);
 ?>
 <body>
@@ -23,5 +24,14 @@ $author = $authorRepository->get_author_name($_GET['id']);
             <h3>This author has not published any articles yet</h3>
         <?php endif; ?>
     </div>
+    <button class="button" id="load-more-articles-button" onclick="nextPage()">
+        LOAD MORE
+    </button>
+    <script>
+        let amountOfPages = <?= $amountOfPages ?>;
+        let currentPath = "articles_by_author.php&authorId=<?= $_GET['id'] ?>";
+    </script>
+    <script src="scripts/load_more_articles_scripts.js">
+    </script>
 </div>
 </body>

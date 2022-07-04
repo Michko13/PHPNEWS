@@ -11,7 +11,7 @@ if (empty($_GET['id']) || !$articleRepository->does_article_exist($_GET['id'])) 
 $commentRepository = new CommentRepository();
 $article = $articleRepository->get_article($_GET['id']);
 $comments = $commentRepository->get_article_comments($article['article_id']);
-$recommendedArticles = $articleRepository->get_recommended_articles($article['category_id'], 5);
+$recommendedArticles = $articleRepository->get_recommended_articles($article['category_id'], $_GET['id'], 4);
 $articleRepository->add_view($_GET['id']);
 ?>
 <body>
@@ -75,14 +75,12 @@ $articleRepository->add_view($_GET['id']);
             <h4 id="article-recommendations__title">Recommended</h4>
             <div id="article-recommendations__articles">
                 <?php foreach ($recommendedArticles as $recommendedArticle): ?>
-                    <?php if ($recommendedArticle['article_id'] != $article['article_id']): ?>
                         <a class="recommended-article"
                            href="article_detail.php?id=<?= $recommendedArticle['article_id'] ?>">
                             <img class="recommended-article__title-image"
                                  src="<?= $recommendedArticle['title_image'] ?>">
                             <h4 class="recommended-article__title"><?= $recommendedArticle['title'] ?></h4>
                         </a>
-                    <?php endif ?>
                 <?php endforeach; ?>
             </div>
         </div>

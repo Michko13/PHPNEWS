@@ -15,6 +15,7 @@ function selectImageFromUpload() {
     fileReader.onload = function (event) {
         imagePreview.style.display = "block";
         imagePreview.src = event.target.result;
+        galleryImageLocation.value = null;
     };
 }
 

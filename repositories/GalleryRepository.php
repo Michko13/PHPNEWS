@@ -44,7 +44,7 @@ class GalleryRepository
         if ($search == null) {
             $sql = 'SELECT * 
                 FROM image
-                LIMIT 16 OFFSET ' . max($page * 16 - 16, 0);
+                LIMIT 16 OFFSET ' . $page * 16 - 16;
 
             return DatabaseService::get_instance()->select($sql);
         }
@@ -52,7 +52,7 @@ class GalleryRepository
         $sql = "SELECT * 
                 FROM image
                 WHERE title LIKE :search
-                LIMIT 16 OFFSET " . max($page * 16 - 16, 0);
+                LIMIT 16 OFFSET " . $page * 16 - 16;
 
         $params = [
             ':search' => '%' . $search . '%'
