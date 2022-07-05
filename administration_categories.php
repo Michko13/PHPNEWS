@@ -13,15 +13,15 @@ require_once 'components/category_dialog.php';
 require_once 'components/alert_dialog.php';
 ?>
 <script>
-    const categoryDialog = document.getElementById("category-dialog");
-    const alertDialog = document.getElementById("alert-dialog");
-    const alertDialogMessage = document.getElementById("alert-dialog__message");
-    const categoryDialogTitle = document.getElementById("category-dialog__title");
-    const categoryDialogForm = document.getElementById("category-dialog__form");
-    const categoryDialogId = document.getElementById("category-dialog__id");
-    const categoryDialogName = document.getElementById("category-dialog__name");
-    const categoryDialogDescription = document.getElementById("category-dialog__description");
-    const categoryDialogSubmitButton = document.getElementById("category-dialog__submit-button");
+    const alertDialog = document.querySelector("#alert-dialog");
+    const alertDialogMessage = document.querySelector("#alert-dialog__message");
+    const categoryDialog = document.querySelector("#category-dialog");
+    const categoryDialogTitle = document.querySelector("#category-dialog__title");
+    const categoryDialogForm = document.querySelector("#category-dialog__form");
+    const categoryDialogId = document.querySelector("#category-dialog__id");
+    const categoryDialogName = document.querySelector("#category-dialog__name");
+    const categoryDialogDescription = document.querySelector("#category-dialog__description");
+    const categoryDialogSubmitButton = document.querySelector("#category-dialog__submit-button");
 
     function openCategoryAddDialog() {
         categoryDialogTitle.innerText = "Add category";
@@ -63,7 +63,7 @@ require_once 'components/alert_dialog.php';
     </div>
     <hr class="horizontal-line">
     <div id="administration__actions">
-        <a class="button" onclick="openCategoryAddDialog()">Add category</a>
+        <div class="button" onclick="openCategoryAddDialog()">Add category</div>
     </div>
     <table id="administration__categories">
         <thead>

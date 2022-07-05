@@ -528,6 +528,10 @@ nav {
 
   .horizontal-line {
     margin-bottom: 24px;
+
+    @media (max-width: 801px) {
+      display: none;
+    }
   }
 
   #first-article {
@@ -739,10 +743,6 @@ nav {
       height: 5px;
       background-color: var(--dark-blue);
       margin-top: 16px;
-
-      @media (max-width: 801px) {
-        display: none;
-      }
     }
 
     .comments-title {

@@ -47,4 +47,4 @@
     </div>
 </div>
 <?php require_once 'components/gallery_dialog.php' ?>
-<script src="image_picking_scripts.js"></script>
+<script src="scripts/image_picking_scripts.js"></script>

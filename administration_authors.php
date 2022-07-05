@@ -9,9 +9,12 @@ $authors = $authorRepository->get_all_authors();
 <body>
 <?php
 require_once 'components/navbar.php';
+require_once 'components/alert_dialog.php';
 require_once 'components/author_dialog.php';
 ?>
 <script>
+    const alertDialog = document.querySelector("#alert-dialog");
+    const alertDialogMessage = document.querySelector("#alert-dialog__message");
     const authorDialog = document.querySelector("#author-dialog");
     const authorDialogTitle = document.querySelector("#author-dialog__title");
     const authorDialogForm = document.querySelector("#author-dialog__form");
@@ -24,7 +27,6 @@ require_once 'components/author_dialog.php';
     const authorDialogLastname = document.querySelector("#author-dialog__lastname")
     const authorDialogBio = document.querySelector("#author-dialog__bio")
     const authorDialogSubmitButton = document.querySelector("#author-dialog__submit-button");
-
 
     function openAuthorAddDialog() {
         authorDialogTitle.innerText = "Add author";
@@ -57,6 +59,17 @@ require_once 'components/author_dialog.php';
         authorDialogLastname.value = lastname;
         authorDialogBio.value = bio;
     }
+
+    function deleteAuthor(id, articleCount) {
+        if (articleCount > 0) {
+            console.log("aaa");
+            alertDialogMessage.innerText = "You cannot delete a user that has published articles";
+            alertDialog.style.display = "flex";
+            console.log(alertDialog);
+        } else {
+            window.location.href = `author_delete.php?id=${id}`
+        }
+    }
 </script>
 <div id="administration-page" class="page">
     <h1 class="page__title">Administration</h1>
@@ -68,7 +81,7 @@ require_once 'components/author_dialog.php';
     </div>
     <hr class="horizontal-line">
     <div id="administration__actions">
-        <a class="button" onclick="openAuthorAddDialog()">Add author</a>
+        <div class="button" onclick="openAuthorAddDialog()">Add author</div>
     </div>
     <table id="administration__authors">
         <thead>
@@ -93,12 +106,12 @@ require_once 'components/author_dialog.php';
                 <td class="administration-author__articles"><?= $author['article_count'] ?></td>
                 <td class="administration-table__actions">
                     <?php if ($_SESSION['is_admin'] == 1 || $author['id'] == $_SESSION['id']): ?>
-                        <a class="button"
+                        <button class="button"
                            onclick="openAuthorEditDialog('<?= $author['id'] ?>', '<?= $author['username'] ?>', '<?= $author['profile_image'] ?>',
                                    '<?= $author['profile_image_id'] ?>', '<?= $author['firstname'] ?>', '<?= $author['lastname'] ?>',
-                                   '<?= escapeJavaScriptText($author['bio']) ?>')">Edit</a>
-                        <a class="button button-danger"
-                           href="author_delete.php?id=<?= $author['id'] ?>">Delete</a>
+                                   '<?= escapeJavaScriptText($author['bio']) ?>')">Edit</button>
+                        <button class="button button-danger"
+                           onclick="deleteAuthor(<?= $author['id'] ?>, <?= $author['article_count'] ?>)">Delete</button>
                     <?php endif; ?>
                 </td>
             </tr>

@@ -75,7 +75,7 @@ require_once 'components/gallery_dialog.php';
             <input type="checkbox" name="publish" <?php echo($article['is_published'] == 1 ? "checked" : "") ?>>
         </div>
         <textarea class="editor" id="content" name="content" rows="30" cols="80"><?= $article['content'] ?></textarea>
-        <button class="button" type="submit">Save</button>
+        <div style="font-size: 1.1rem;" class="button" type="submit">Save</div>
     </form>
 </div>
 <script src="scripts/image_picking_scripts.js"></script>

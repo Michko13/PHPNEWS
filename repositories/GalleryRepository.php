@@ -26,6 +26,18 @@ class GalleryRepository
         return $this->add_image($title, 'uploads/' . $randomName);
     }
 
+    public function get_image_location_by_id($id)
+    {
+        $sql = 'SELECT location FROM image 
+                WHERE id = :id';
+
+        $params = [
+            ':id' => $id,
+        ];
+
+        return DatabaseService::get_instance()->select($sql, $params);
+    }
+
     public function add_image($title, $location)
     {
         $sql = 'INSERT INTO image 

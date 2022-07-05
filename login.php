@@ -12,7 +12,7 @@ if(isset($_SESSION['username'])) {
 
 if(!empty($_POST['username']) && !empty($_POST['password'])) {
     $sql = 'SELECT author.id, author.username, author.firstname, author.lastname, author.bio, author.is_admin,
-            image.location as image
+            image.location AS profile_image, image.id as profile_image_id
             FROM author
             INNER JOIN image on image.id = author.image_id
             WHERE username = :username AND password = :password';

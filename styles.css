@@ -453,6 +453,11 @@ nav #hamburger .hamburger__bar {
 #index-page .horizontal-line {
   margin-bottom: 24px;
 }
+@media (max-width: 801px) {
+  #index-page .horizontal-line {
+    display: none;
+  }
+}
 @media (min-width: 801px) {
   #index-page #first-article {
     display: none;
@@ -647,11 +652,6 @@ nav #hamburger .hamburger__bar {
   height: 5px;
   background-color: var(--dark-blue);
   margin-top: 16px;
-}
-@media (max-width: 801px) {
-  #article-detail-page #article-detail-page__left-side .horizontal-line {
-    display: none;
-  }
 }
 #article-detail-page #article-detail-page__left-side .comments-title {
   font-size: 1.2em;

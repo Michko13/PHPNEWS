@@ -21,7 +21,7 @@ $author = $authorRepository->get_author_name($_GET['id']);
         <?php if(!empty($articles)): ?>
             <?php require_once("components/articles.php") ?>
         <?php else: ?>
-            <h3>This author has not published any articles yet</h3>
+            <h3><i>This author has not published any articles yet...</i></h3>
         <?php endif; ?>
     </div>
     <button class="button" id="load-more-articles-button" onclick="nextPage()">

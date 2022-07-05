@@ -1,7 +1,7 @@
 let page = 1;
 const loadMoreButton = document.querySelector("#load-more-articles-button");
 
-if (amountOfPages === 1) {
+if (amountOfPages <= 1) {
     loadMoreButton.style.display = "none";
 }
 

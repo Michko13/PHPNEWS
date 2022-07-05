@@ -65,7 +65,7 @@ require_once 'components/gallery_dialog.php';
             <input type="checkbox" name="publish">
         </div>
         <textarea class="editor" id="content" name="content" rows="30" cols="80"></textarea>
-        <button class="button" type="submit">Save and publish</button>
+        <div style="font-size: 1.1rem;" class="button" type="submit">Save</div>
     </form>
 </div>
 <script src="scripts/image_picking_scripts.js"></script>
